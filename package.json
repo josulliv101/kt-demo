@@ -13,7 +13,7 @@
     }
   },
   "scripts": {
-    "start": "echo \"app started\" && exit 1"
+    "start": "echo \"Kindturtle app started\""
   },
   "author": "Joe Sullivan",
   "license": "ISC",
