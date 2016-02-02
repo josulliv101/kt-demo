@@ -1,0 +1,24 @@
+{
+  "name": "kindturtle-app",
+  "version": "1.0.0",
+  "description": "Kindturtle App",
+  "engines": {
+    "node": "5.1.1",
+    "npm": "3.3.12"
+  },
+  "config": {},
+  "metadata": {
+    "graphql": {
+      "schema": "./graphql/schema.json"
+    }
+  },
+  "scripts": {
+    "start": "echo \"app started\" && exit 1",
+  },
+  "author": "Joe Sullivan",
+  "license": "ISC",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
