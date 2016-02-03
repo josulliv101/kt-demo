@@ -3,12 +3,13 @@ interface Node {
 }
 
 type Root {
-  viewer: User
+  viewer(id: ID): User
   node(id: ID!): Node
 }
 
 type User implements Node {
   id: ID!
+  uid: String
   name: String
   token: String
 }

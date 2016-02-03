@@ -21,17 +21,13 @@ import {
   toGlobalId,
 } from 'graphql-relay';
 
-import {
-  User,
-  getUser,
-  getViewer
-} from '../data/database';
+import User from './models/User';
 
 var {nodeInterface, nodeField} = nodeDefinitions(
   (globalId) => {
     var {type, id} = fromGlobalId(globalId);
     if (type === 'User') {
-      return getUser(id);
+      return User.getUserById(id);
     }
     return null;
   },
@@ -47,13 +43,17 @@ var GraphQLUser = new GraphQLObjectType({
   name: 'User',
   fields: {
     id: globalIdField('User'),
+    uid: {
+      type: GraphQLString,
+      resolve: user => user.uid,
+    },
     name: {
       type: GraphQLString,
-      resolve: () => getViewer().name,
+      resolve: user => user.name.full,
     },
     token: {
       type: GraphQLString,
-      resolve: () => getViewer().token,
+      resolve: () => 'mytoken123abc',
     }
   },
   interfaces: [nodeInterface],
@@ -64,7 +64,12 @@ var Root = new GraphQLObjectType({
   fields: {
     viewer: {
       type: GraphQLUser,
-      resolve: () => getViewer(),
+      args: {
+        id: {
+          type: GraphQLID
+        }
+      },
+      resolve: (root, {id, uid}) => User.getUserById(uid),
     },
     node: nodeField,
   },
