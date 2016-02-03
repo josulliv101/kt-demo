@@ -1,18 +1,18 @@
 import jwt from 'express-jwt';
 
-var {AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_DOMAIN, COOKIE_NAME} = process.env;
+var {AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_DOMAIN, AUTH0_REDIRECT, COOKIE_NAME} = process.env;
 
 export default {
   AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET,
   middleware: {
-    secure: jwt( config({ credentials: true }) ),
+    private: jwt( config({ credentials: true }) ),
     public: jwt( config({}) )
   },
   handleNotAuthenticatedError: function (err, req, res, next) {
     console.log('ERROR!!!!!!');
     if (err.name === 'UnauthorizedError') {
-      res.redirect(`https://${AUTH0_DOMAIN}/login?client=${AUTH0_CLIENT_ID}`);
+      res.redirect(`https://${AUTH0_DOMAIN}/authorize/?client_id=${AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${AUTH0_REDIRECT}&state=OPAQUE_VALUE&connection=facebook`);
     }
   }
 }
