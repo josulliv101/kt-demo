@@ -1,4 +1,3 @@
-import {} from 'dotenv/config';
 import express from 'express';
 import graphQL from './graphql'; // GraphQL Server
 import mongoose from 'mongoose';
