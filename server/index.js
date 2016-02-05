@@ -9,9 +9,6 @@ import bodyParser from 'body-parser';
 //import app from '../app/server';
 import renderOnServer from '../app/renderOnServer'
 
-require('es6-promise').polyfill();
-require('isomorphic-fetch/fetch-npm-node');
-
 var {PORT, NODE_ENV, PWD, MONGOLAB_URI} = process.env;
 
 var router = express();
