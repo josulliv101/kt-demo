@@ -7,7 +7,7 @@ export default class App extends React.Component {
   render() {
     var {children, routes, viewer} = this.props;
     var authUser = routes[0].authUser;
-    console.log('routes!!!', this.props.routes[0]);
+    //console.log('routes!!!', this.props.routes[0]);
     return (
       <div className="test-123">
         <div className="container p-t-md">
