@@ -5,17 +5,18 @@
   "config": {},
   "metadata": {
     "graphql": {
-      "schema": "./graphql/schema.json"
+      "schema": "./data/schema.json"
     }
   },
   "scripts": {
     "start": "babel-node  ./server/index.js",
-    "app:server:start:dev": "nodemon --exec NODE_ENV=development babel-node  -- ./server/index.js",
+    "start:dev": "nodemon --exec babel-node  -- ./server/index.js",
     "update:schema": "babel-node ./scripts/updateSchema.js"
   },
   "author": "Joe Sullivan",
   "license": "MIT",
   "dependencies": {
+    "auth0": "^2.0.0",
     "babel-cli": "^6.4.5",
     "babel-core": "^6.4.5",
     "babel-loader": "^6.2.1",
@@ -24,13 +25,29 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "babel-relay-plugin": "^0.6.3",
+    "babel-relay-plugin-loader": "^0.6.4",
+    "body-parser": "^1.14.2",
+    "cookie-parser": "^1.4.1",
+    "ejs": "^2.4.1",
+    "es6-promise": "^3.0.2",
     "express": "^4.13.4",
     "express-graphql": "^0.4.5",
     "express-jwt": "^3.3.0",
     "graphql": "^0.4.14",
     "graphql-relay": "^0.3.6",
+    "history": "^2.0.0",
+    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-relay": "^0.4.2",
+    "isomorphic-relay-router": "^0.5.1",
+    "jwt-decode": "^1.5.1",
     "mongoose": "^4.3.7",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-relay": "^0.6.1",
+    "react-router": "^2.0.0-rc5",
+    "superagent": "^1.7.2",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "dotenv": "^2.0.0",
