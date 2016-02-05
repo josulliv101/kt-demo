@@ -29,7 +29,7 @@ export default {
   },
 
   handleNotAuthenticatedError: function (err, req, res, next) {
-    console.log('ERROR!!!!!!');
+    //console.log('ERROR!!!!!!');
     if (err.name === 'UnauthorizedError') {
       //res.redirect(`https://${AUTH0_DOMAIN}/authorize/?client_id=${AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${AUTH0_REDIRECT}&state=OPAQUE_VALUE&connection=facebook`);
       res.redirect([
@@ -47,7 +47,7 @@ export default {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
     
-    console.log('auth cb query', query);
+    //console.log('auth cb query', query);
 
     request
      .post(`https://${AUTH0_DOMAIN}/oauth/token`)
@@ -61,10 +61,10 @@ export default {
      })
      .end(function(err, resp){
        if (err || !resp.ok) {
-         console.log('Oh no! error', err);
+         //console.log('Oh no! error', err);
        } else {
          //let attrs = jwtDecode(resp.body.id_token);
-         console.info('yay got ', resp.body.id_token);
+         //console.info('yay got ', resp.body.id_token);
          //AuthUser.setUser(attrs);
          //AuthUser.setToken(resp.body.id_token);
          //token.set(resp.body.id_token);
@@ -87,7 +87,7 @@ function config({ credentials = false }) {
 }
 
 function getToken(req) {
-  console.log("fromHeaderOrCookie", req.cookies);
+  //console.log("fromHeaderOrCookie", req.cookies);
   if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
     return req.headers.authorization.split(' ')[1];
   } else if(req.cookies && req.cookies[COOKIE_NAME]) {
