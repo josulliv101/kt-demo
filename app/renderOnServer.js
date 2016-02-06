@@ -7,8 +7,7 @@ import RelayStoreData from 'react-relay/lib/RelayStoreData';
 import {match} from 'react-router';
 import router from './router';
 
-const GRAPHQL_URL = `http://localhost:3000/graphql`;
-const {COOKIE_NAME} = process.env;
+const {COOKIE_NAME, GRAPHQL_URL} = process.env;
 
 Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer(GRAPHQL_URL));
 
