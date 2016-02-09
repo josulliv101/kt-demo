@@ -66,16 +66,19 @@ export default {
           `&client_id=${AUTH0_CLIENT_ID}`,
           `&redirect_uri=${AUTH0_REDIRECT}`,
           `&state=VALUE_THAT_SURVIVES_REDIRECTS`,
-          `&scope=openid user_id name picture user_metadata`
+          `&scope=openid user_id name family_name given_name picture user_metadata`
       ].join(''));
     }
   },
 
-  addNewUserToDB: function(user_id) {
+  addNewUserToDB: function(payload) {
+
+    var {user_id, family_name, given_name, picture} = payload;
+
     console.log('auth.addNewUserToDB', user_id);
 
     request
-     .post(`${GRAPHQL_URL}?query=mutation{createNewUser(input:{email:"${user_id}",fname:"Get",lname: "Cereal", clientMutationId: "123" }){success}}`)
+     .post(`${GRAPHQL_URL}?query=mutation{createNewUser(input:{user_id:"${user_id}",email:"",fname:"${given_name}",lname: "${family_name}", clientMutationId: "${user_id}" }){success}}`)
      .type('json')
      //.send({mutation{createNewUser(input:{email: "joe@tufts.edu", fname: "Get", lname: "Cereal", clientMutationId: "123" }){success}}})
      .end((err, resp) => {
@@ -118,7 +121,7 @@ export default {
          this.handleNewUser(attrs.user_id)
              .then( () => {
 
-               this.addNewUserToDB(attrs.user_id);
+               this.addNewUserToDB(attrs);
 
                attrs.user_metadata.created = true;
               

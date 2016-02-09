@@ -14,13 +14,13 @@ export default class App extends React.Component {
           <div className="row">
             <div className="col-md-12">
               <h3>Kindturtle App</h3>
-              <p>viewer id {viewer.uid}</p>
+              <p>user id <strong>{viewer.user_id}</strong></p>
               {
                 authUser && 
                 <div>
                   <p>
                     <img style={{width: '32px', position: 'relative', top: 12, marginRight: 9, border: '#6699cc 1px solid', borderRadius: '50%'}} src={authUser.picture} />
-                    {authUser.name}
+                    {viewer.name}
                   </p>
                   <p><a href="/logout">logout</a></p>
                 </div>
@@ -40,7 +40,7 @@ export default Relay.createContainer(App, {
     viewer: () => Relay.QL`
       fragment on User {
         __typename
-        id, uid
+        id, name, user_id
       }
     `
   }

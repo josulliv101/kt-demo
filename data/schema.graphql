@@ -2,6 +2,7 @@ input CreateNewUserInput {
   fname: String
   lname: String
   email: String
+  user_id: String
   clientMutationId: String!
 }
 
@@ -15,7 +16,7 @@ interface Node {
 }
 
 type Root {
-  viewer(id: ID): User
+  viewer(user_id: String): User
   node(id: ID!): Node
 }
 
@@ -26,6 +27,6 @@ type RootMutation {
 type User implements Node {
   id: ID!
   uid: String
+  user_id: String
   name: String
-  token: String
 }

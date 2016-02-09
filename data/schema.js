@@ -47,13 +47,13 @@ var GraphQLUser = new GraphQLObjectType({
       type: GraphQLString,
       resolve: user => user.uid,
     },
+    user_id: {
+      type: GraphQLString,
+      resolve: user => user.user_id,
+    },
     name: {
       type: GraphQLString,
       resolve: user => user.name.full,
-    },
-    token: {
-      type: GraphQLString,
-      resolve: () => 'mytoken123abc',
     }
   },
   interfaces: [nodeInterface],
@@ -65,11 +65,11 @@ var RootQuery = new GraphQLObjectType({
     viewer: {
       type: GraphQLUser,
       args: {
-        id: {
-          type: GraphQLID
+        user_id: {
+          type: GraphQLString
         }
       },
-      resolve: (root, {id, uid}) => User.getUserById(uid),
+      resolve: (root, {user_id}) => User.getUserByUserId(user_id),
     },
     node: nodeField,
   },
@@ -82,7 +82,8 @@ var CreateNewUserMutation = mutationWithClientMutationId({
   inputFields: {
     fname: {type: GraphQLString },
     lname: {type: GraphQLString },
-    email: {type: GraphQLString }
+    email: {type: GraphQLString },
+    user_id: {type: GraphQLString }
   },
  
   outputFields: {

@@ -5,18 +5,23 @@ import Relay from 'react-relay';
 import App from './components/App';
 import pgHome from './components/pg/Home';
 
+var _user_id = null;
+
 var appRoute = {
     path: '/',
     component: App,
     authUser: null,
     token: null,
-    //prepareParams: (params, route) => ({...params, token: _token}),
-    queries: { viewer: () => Relay.QL`query { viewer }` },
+    prepareParams: (params, route) => ({...params, user_id: _user_id }),
+    queries: { viewer: () => Relay.QL`query { viewer(user_id: $user_id) }` },
     indexRoute: {
         component: pgHome
     }
 };
 
 export default {
-  getRoutes: (authData) => [Object.assign(appRoute, authData)]
+  getRoutes: (user_id, authData) => {
+    _user_id = user_id;
+    return [Object.assign(appRoute, authData)];
+  }
 }

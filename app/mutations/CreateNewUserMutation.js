@@ -64,8 +64,8 @@ export default class CreateNewUserMutation extends Relay.Mutation {
   }*/
   
   getVariables() {
-    var {fname, lname, email} = this.props;
-    return {fname, lname, email};
+    var {fname, lname, email, user_id} = this.props;
+    return {fname, lname, email, user_id};
   }
 
 /*  getOptimisticResponse() {

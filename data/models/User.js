@@ -13,6 +13,9 @@ let UserSchema = new mongoose.Schema({
     last: String
   },
   email: {
+    type: String
+  },
+  user_id: {
     type: String,
     required: true,
     unique: true,
@@ -36,17 +39,18 @@ let User = mongoose.model('User', UserSchema);
 
 exports.UserSchema = User;
 
-let userAnonymous = new User({ name: { first: 'Anonymous', last: 'User' }});
+let userAnonymous = new User({ user_id: -1, name: { first: 'Anonymous', last: 'User' }});
 
 
-exports.addUser = ({fname, lname, email}) => {
+exports.addUser = ({fname, lname, email, user_id}) => {
 
   var newUser = new User({
     name: {
       first: fname,
       last: lname
     },
-    email: email
+    email: email,
+    user_id: user_id
   });
 
   return new Promise((resolve, reject) => {
@@ -57,7 +61,21 @@ exports.addUser = ({fname, lname, email}) => {
 
 };
 
+function getUserByUserId(user_id) {
+  console.log('DB::getUserByUserId', user_id);
+  return new Promise((resolve, reject) => {
 
+    if (!user_id) return resolve(userAnonymous);
+
+    User.findOne({user_id: user_id}).exec((err,res) => {
+
+        // No user found
+        if (!res) return resolve(userAnonymous);
+
+        err ? reject(err) : resolve(res);
+    });
+  });
+}
 
 function getUserById(id) {
   console.log('DB::getUserById', id);
@@ -80,3 +98,4 @@ function getListOfUsers() {
 }
 
 exports.getUserById = getUserById;
+exports.getUserByUserId = getUserByUserId;
