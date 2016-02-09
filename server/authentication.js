@@ -1,12 +1,11 @@
 import jwt from 'express-jwt';
+import jwt2 from 'jsonwebtoken';
 import url from 'url';
 import request from 'superagent';
-//import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import auth0 from 'auth0';
-//import CreateUserMutation from './mutations/CreateUserMutation.js';
-//import AuthUser from '../app/utils/AuthUser';
 
-var {AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_DOMAIN, AUTH0_REDIRECT, AUTH0_API_JWT, COOKIE_NAME} = process.env;
+var {AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_DOMAIN, AUTH0_REDIRECT, AUTH0_API_JWT, COOKIE_NAME, GRAPHQL_URL} = process.env;
 
 // Make API calls to client requires global API client id
 var managementAuth0 = new auth0.ManagementClient({
@@ -18,11 +17,40 @@ export default {
 
   AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET,
+
   middleware: {
     private: jwt( config({ credentials: true }) ),
     public: jwt( config({}) )
   },
 
+  isNewUser: function(user = {}) {
+    return user.user_metadata && user.user_metadata.isNewUser;
+  },
+
+  handleNewUser: function(user_id) {
+
+    return new Promise((resolve, reject) => {
+      
+      console.log('handleNewUser', user_id);
+
+      managementAuth0.updateUserMetadata({id: user_id}, { created: true }, function (err, user) {
+
+        if (err) {
+          console.log('updateUserOnAuth0 error', err, user_id);
+          return reject({bar: 'baz'});
+        }
+
+        // Updated user.
+        console.log('updateUserOnAuth0 success', user_id);
+
+        resolve({success: true, user_id });
+
+      });
+
+    });
+  },
+  
+  // TODO: make auth0 call to logout as well?
   handleLogout: function(req, res) {
     res.clearCookie(COOKIE_NAME);
     res.redirect('/#no_more_cookie');
@@ -38,11 +66,27 @@ export default {
           `&client_id=${AUTH0_CLIENT_ID}`,
           `&redirect_uri=${AUTH0_REDIRECT}`,
           `&state=VALUE_THAT_SURVIVES_REDIRECTS`,
-          `&scope=openid name picture user_metadata`
+          `&scope=openid user_id name picture user_metadata`
       ].join(''));
     }
   },
 
+  addNewUserToDB: function(user_id) {
+    console.log('auth.addNewUserToDB', user_id);
+
+    request
+     .post(`${GRAPHQL_URL}?query=mutation{createNewUser(input:{email:"${user_id}",fname:"Get",lname: "Cereal", clientMutationId: "123" }){success}}`)
+     .type('json')
+     //.send({mutation{createNewUser(input:{email: "joe@tufts.edu", fname: "Get", lname: "Cereal", clientMutationId: "123" }){success}}})
+     .end((err, resp) => {
+       if (err || !resp.ok) {
+         console.log('mutation: err', err);
+       } else {
+         console.log('mutation: user added', resp.body);
+       }
+     });
+  },
+ 
   handleAuthSuccess: function(req, res) {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
@@ -59,22 +103,40 @@ export default {
         "grant_type": "authorization_code",
         "code": query.code
      })
-     .end(function(err, resp){
+     .end((err, resp) => {
        if (err || !resp.ok) {
          //console.log('Oh no! error', err);
        } else {
-         //let attrs = jwtDecode(resp.body.id_token);
-         //console.info('yay got ', resp.body.id_token);
-         //AuthUser.setUser(attrs);
-         //AuthUser.setToken(resp.body.id_token);
-         //token.set(resp.body.id_token);
-         res.cookie(COOKIE_NAME, resp.body.id_token, { path: '/', httpOnly: true }); // , httpOnly: true
-         //token.setAuthUser(req.user);
-         //res.send('yo', resp);
-         res.redirect(302, '/#authenticated');
+         let attrs = jwtDecode(resp.body.id_token);
+         console.info('yay got ', attrs, resp.body);
+         
+         if (attrs.user_metadata.created) {
+           res.cookie(COOKIE_NAME, resp.body.id_token, { path: '/', httpOnly: true }); // , httpOnly: true
+           res.redirect(302, '/#authenticated_user_already_created');   
+           return;       
+         }
+         this.handleNewUser(attrs.user_id)
+             .then( () => {
+
+               this.addNewUserToDB(attrs.user_id);
+
+               attrs.user_metadata.created = true;
+              
+               var tk = jwt2.sign(attrs, new Buffer(AUTH0_CLIENT_SECRET, 'base64'), { algorithm: 'HS256'});
+               console.log('new token ##', tk);
+
+               res.cookie(COOKIE_NAME, tk, { path: '/', httpOnly: true }); // , httpOnly: true
+
+               // Redirect to a url that creates a new user. It will check for existance first.
+               res.redirect(302, '/#authenticated_user_created_metadata_updated');
+
+             });
+
        }
      });
-  }
+  },
+
+  getToken
 }
 
 function config({ credentials = false }) {
@@ -87,11 +149,17 @@ function config({ credentials = false }) {
 }
 
 function getToken(req) {
+
+  var url_parts = url.parse(req.url, true);
+  var query = url_parts.query;
+
   //console.log("fromHeaderOrCookie", req.cookies);
   if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
     return req.headers.authorization.split(' ')[1];
   } else if(req.cookies && req.cookies[COOKIE_NAME]) {
     return req.cookies[COOKIE_NAME];
+  } else if(query.token && query.token != '') {
+    return query.token;
   }
   return null;
 }

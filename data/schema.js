@@ -59,7 +59,7 @@ var GraphQLUser = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-var Root = new GraphQLObjectType({
+var RootQuery = new GraphQLObjectType({
   name: 'Root',
   fields: {
     viewer: {
@@ -75,7 +75,38 @@ var Root = new GraphQLObjectType({
   },
 });
 
+var CreateNewUserMutation = mutationWithClientMutationId({
+
+  name: 'CreateNewUser',
+
+  inputFields: {
+    fname: {type: GraphQLString },
+    lname: {type: GraphQLString },
+    email: {type: GraphQLString }
+  },
+ 
+  outputFields: {
+    success: {
+      type: GraphQLString,
+      resolve: ({user}) => user.id
+    },
+  },
+   
+  mutateAndGetPayload: User.addUser
+ 
+});
+
+const RootMutation = new GraphQLObjectType({
+
+  name: "RootMutation",
+
+  fields: () => ({
+    createNewUser: CreateNewUserMutation
+  })
+
+});
+
 export default new GraphQLSchema({
-  query: Root,
-  //mutation: Mutation,
+  query: RootQuery,
+  mutation: RootMutation
 });

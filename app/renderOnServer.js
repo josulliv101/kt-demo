@@ -6,6 +6,8 @@ import Relay from 'react-relay';
 import RelayStoreData from 'react-relay/lib/RelayStoreData';
 import {match} from 'react-router';
 import router from './router';
+import auth from '../server/authentication';
+import CreateNewUserMutation from './mutations/CreateNewUserMutation';
 
 const {COOKIE_NAME, GRAPHQL_URL} = process.env;
 
@@ -15,8 +17,21 @@ RelayStoreData.getDefaultInstance().getChangeEmitter().injectBatchingStrategy(()
 
 export default (req, res, next) => {
     
-    let routes = router.getRoutes({ token: req.cookies[COOKIE_NAME], authUser: req.user }),
+    let token = req.cookies[COOKIE_NAME],
+        routes = router.getRoutes({ token, authUser: req.user }),
         location = req.originalUrl;
+    
+    // TODO: make sure token is val && (!token || token == '')
+    if (auth.isNewUser(req.user)) {
+
+        var [fname, lname] = req.user.name.split(' '), email = '';
+        
+        // TODO: async, need to wait to call match()
+        Relay.Store.update(new CreateNewUserMutation({fname, lname, email}), {
+          onSuccess: (res2) => auth.handleNewUser(req.user.user_id),
+          onFailure: (res2) => console.log('Relay.Store.update fail')
+        });
+    }
 
     match({ routes, location }, (error, redirectLocation, renderProps) => {
 

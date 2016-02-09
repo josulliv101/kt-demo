@@ -12,7 +12,12 @@ let UserSchema = new mongoose.Schema({
     first: String,
     last: String
   },
-  email: String
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  }
 });
 
 UserSchema.set('toJSON', { getters: true, virtuals: true });
@@ -32,6 +37,27 @@ let User = mongoose.model('User', UserSchema);
 exports.UserSchema = User;
 
 let userAnonymous = new User({ name: { first: 'Anonymous', last: 'User' }});
+
+
+exports.addUser = ({fname, lname, email}) => {
+
+  var newUser = new User({
+    name: {
+      first: fname,
+      last: lname
+    },
+    email: email
+  });
+
+  return new Promise((resolve, reject) => {
+    
+    newUser.save((err, res) => err ? reject(err) : resolve({ user: res  }) );
+
+  });
+
+};
+
+
 
 function getUserById(id) {
   console.log('DB::getUserById', id);

@@ -1,3 +1,15 @@
+input CreateNewUserInput {
+  fname: String
+  lname: String
+  email: String
+  clientMutationId: String!
+}
+
+type CreateNewUserPayload {
+  success: String
+  clientMutationId: String!
+}
+
 interface Node {
   id: ID!
 }
@@ -5,6 +17,10 @@ interface Node {
 type Root {
   viewer(id: ID): User
   node(id: ID!): Node
+}
+
+type RootMutation {
+  createNewUser(input: CreateNewUserInput!): CreateNewUserPayload
 }
 
 type User implements Node {
