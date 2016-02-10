@@ -5,27 +5,36 @@ export default class App extends React.Component {
 //let App = React.createClass({ JSON.stringify(this.props.routes[0].authUser.name)
 
   render() {
-    var {children, routes, viewer} = this.props;
+    var {children, routes, viewer} = this.props,
+        profile = viewer.profile || {};
+
     var authUser = routes[0].authUser;
-    //console.log('routes!!!', this.props.routes[0]);
+    console.log('viewer!!!', profile);
     return (
       <div className="test-123">
         <div className="container p-t-md">
           <div className="row">
             <div className="col-md-12">
               <h3>Kindturtle App</h3>
-              <p>user id <strong>{viewer.user_id}</strong></p>
               {
                 authUser && 
-                <div>
-                  <p>
-                    <img style={{width: '32px', position: 'relative', top: 12, marginRight: 9, border: '#6699cc 1px solid', borderRadius: '50%'}} src={authUser.picture} />
-                    {viewer.name}
-                  </p>
-                  <p><a href="/logout">logout</a></p>
-                </div>
+
+                <ul className="media-list media-list-stream m-t">
+                  <li className="media m-b">
+                    <a className="media-left" href="#">
+                      <img className="media-object img-circle" src={profile.picture} />
+                    </a>
+                    <div className="media-body">
+                      <strong>{profile.name }</strong> {viewer.user_id}
+                    </div>
+                  </li>
+                </ul>
+
               }
-              <p><a href="/private">members only</a></p>
+              <p>
+                { authUser && <a className="btn btn-sm btn-primary m-r" href="/logout">logout</a> }
+                <a className="btn btn-sm btn-primary"  href="/private">members only</a>
+              </p>
               {children}
             </div>
           </div>
@@ -39,8 +48,13 @@ export default Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on User {
-        __typename
-        id, name, user_id
+        id, 
+        name, 
+        user_id, 
+        profile { 
+          name, 
+          picture 
+        }
       }
     `
   }

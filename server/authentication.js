@@ -80,12 +80,23 @@ export default {
     request
      .post(`${GRAPHQL_URL}?query=mutation{createNewUser(input:{user_id:"${user_id}",email:"",fname:"${given_name}",lname: "${family_name}", clientMutationId: "${user_id}" }){success}}`)
      .type('json')
-     //.send({mutation{createNewUser(input:{email: "joe@tufts.edu", fname: "Get", lname: "Cereal", clientMutationId: "123" }){success}}})
      .end((err, resp) => {
        if (err || !resp.ok) {
          console.log('mutation: err', err);
        } else {
          console.log('mutation: user added', resp.body);
+       }
+     });
+    
+    // TODO: url encode all?
+    request
+     .post(`${GRAPHQL_URL}?query=mutation{createNewProfile(input:{owner_id:"${user_id}",profile_id:"profile-${user_id}",fname:"${given_name}",lname: "${family_name}", picture: "${encodeURIComponent(picture)}", clientMutationId: "profile-${user_id}" }){success}}`)
+     .type('json')
+     .end((err, resp) => {
+       if (err || !resp.ok) {
+         console.log('mutation: err', err);
+       } else {
+         console.log('mutation: profile added', resp.body);
        }
      });
   },
@@ -111,7 +122,7 @@ export default {
          //console.log('Oh no! error', err);
        } else {
          let attrs = jwtDecode(resp.body.id_token);
-         console.info('yay got ', attrs, resp.body);
+         console.info('yay got ', attrs);
          
          if (attrs.user_metadata.created) {
            res.cookie(COOKIE_NAME, resp.body.id_token, { path: '/', httpOnly: true }); // , httpOnly: true

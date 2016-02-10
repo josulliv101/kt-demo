@@ -1,3 +1,17 @@
+input CreateNewProfileInput {
+  fname: String
+  lname: String
+  picture: String
+  profile_id: String
+  owner_id: String
+  clientMutationId: String!
+}
+
+type CreateNewProfilePayload {
+  success: String
+  clientMutationId: String!
+}
+
 input CreateNewUserInput {
   fname: String
   lname: String
@@ -15,6 +29,14 @@ interface Node {
   id: ID!
 }
 
+type Profile implements Node {
+  id: ID!
+  profile_id: String
+  owner_id: String
+  name: String
+  picture: String
+}
+
 type Root {
   viewer(user_id: String): User
   node(id: ID!): Node
@@ -22,6 +44,7 @@ type Root {
 
 type RootMutation {
   createNewUser(input: CreateNewUserInput!): CreateNewUserPayload
+  createNewProfile(input: CreateNewProfileInput!): CreateNewProfilePayload
 }
 
 type User implements Node {
@@ -29,4 +52,5 @@ type User implements Node {
   uid: String
   user_id: String
   name: String
+  profile: Profile
 }

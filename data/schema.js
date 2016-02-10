@@ -28,16 +28,42 @@ var {nodeInterface, nodeField} = nodeDefinitions(
     var {type, id} = fromGlobalId(globalId);
     if (type === 'User') {
       return User.getUserById(id);
+    } else if (type === 'Profile') {
+      console.log("####", id);
+      return User.getProfileById(id);
     }
     return null;
   },
   (obj) => {
     if (obj instanceof User) {
       return GraphQLUser;
+    } else if (obj instanceof Profile) {
+      return GraphQLProfile;
     }
     return null;
   }
 );
+
+var GraphQLProfile = new GraphQLObjectType({
+  name: 'Profile',
+  fields: {
+    id: globalIdField('Profile'),
+    profile_id: {
+      type: GraphQLString,
+    },
+    owner_id: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+      resolve: profile => profile.name.full,
+    },
+    picture: {
+      type: GraphQLString,
+    }
+  },
+  interfaces: [nodeInterface],
+});
 
 var GraphQLUser = new GraphQLObjectType({
   name: 'User',
@@ -45,16 +71,21 @@ var GraphQLUser = new GraphQLObjectType({
     id: globalIdField('User'),
     uid: {
       type: GraphQLString,
-      resolve: user => user.uid,
     },
     user_id: {
       type: GraphQLString,
-      resolve: user => user.user_id,
     },
     name: {
       type: GraphQLString,
       resolve: user => user.name.full,
-    }
+    },
+    profile: {
+      type: GraphQLProfile,
+      resolve: user => {
+        console.log("@@@", user);
+       return User.getUserProfile(user.user_id)
+      }
+    },
   },
   interfaces: [nodeInterface],
 });
@@ -71,6 +102,15 @@ var RootQuery = new GraphQLObjectType({
       },
       resolve: (root, {user_id}) => User.getUserByUserId(user_id),
     },
+/*    profile: {
+      type: GraphQLProfile,
+      args: {
+        profile_id: {
+          type: GraphQLString
+        }
+      },
+      resolve: (root, {profile_id}) => User.getProfileByProfileId(profile_id),
+    },*/
     node: nodeField,
   },
 });
@@ -97,12 +137,36 @@ var CreateNewUserMutation = mutationWithClientMutationId({
  
 });
 
+var CreateNewProfileMutation = mutationWithClientMutationId({
+
+  name: 'CreateNewProfile',
+
+  inputFields: {
+    fname: {type: GraphQLString },
+    lname: {type: GraphQLString },
+    picture: {type: GraphQLString },
+    profile_id: {type: GraphQLString },
+    owner_id: {type: GraphQLString }
+  },
+ 
+  outputFields: {
+    success: {
+      type: GraphQLString,
+      resolve: ({profile}) => profile.id
+    },
+  },
+   
+  mutateAndGetPayload: User.addProfile
+ 
+});
+
 const RootMutation = new GraphQLObjectType({
 
   name: "RootMutation",
 
   fields: () => ({
-    createNewUser: CreateNewUserMutation
+    createNewUser: CreateNewUserMutation,
+    createNewProfile: CreateNewProfileMutation
   })
 
 });
