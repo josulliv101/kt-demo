@@ -1,5 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
+import {Link} from 'react-router';
 
 export default class App extends React.Component {
 //let App = React.createClass({ JSON.stringify(this.props.routes[0].authUser.name)
@@ -11,6 +12,28 @@ export default class App extends React.Component {
         <div className="container p-t-md">
           <div className="row">
             <div className="col-md-12">
+              <nav>
+                <ul className="nav nav-pills">
+                  <li>
+                    <Link to="/" activeClassName="active">
+                      <span className="icon icon-home" style={{marginRight: 6}}></span>
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/about" activeClassName="active">
+                      <span className="icon icon-v-card" style={{marginRight: 6}}></span>
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <span className="icon icon-mail" style={{marginRight: 6}}></span>
+                      Contact
+                    </a>
+                  </li>
+                </ul>
+              </nav>
               <h3>Kindturtle App</h3>
               {
                 authenticated && 
