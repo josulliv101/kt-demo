@@ -64,8 +64,16 @@ UserSchema.virtual('name.full').get(function() {
   return name.first + ' ' + name.last;
 });
 
+UserSchema.virtual('type').get(function() {
+  return 'User';
+});
+ 
 UserSchema.virtual('uid').get(function() {
   return this.id;
+});
+
+ProfileSchema.virtual('type').get(function() {
+  return 'Profile';
 });
 
 ProfileSchema.virtual('name.full').get(function() {
@@ -80,6 +88,7 @@ exports.UserSchema = User;
 exports.ProfileSchema = Profile;
 
 let userAnonymous = new User({ user_id: -1, name: { first: 'Anonymous', last: 'User' }});
+userAnonymous.anonymous = true;
 
 
 exports.addUser = ({fname, lname, email, user_id}) => {
@@ -127,10 +136,14 @@ function getProfileByProfileId(profile_id) {
 
     if (!profile_id) return resolve(null);
 
-    User.findOne({profile_id: profile_id}).exec((err,res) => {
+    Profile.findOne({profile_id: profile_id}).exec((err,res) => {
+        
+        console.log('...results profile', res && res.profile_id);
 
         // No user found
         if (!res) return resolve(null);
+        
+        
 
         err ? reject(err) : resolve(res);
     });
@@ -164,6 +177,8 @@ function getUserByUserId(user_id) {
     if (!user_id) return resolve(userAnonymous);
 
     User.findOne({user_id: user_id}).exec((err,res) => {
+        
+        console.log('DB::getUserByUserId results', res);
 
         // No user found
         if (!res) return resolve(userAnonymous);

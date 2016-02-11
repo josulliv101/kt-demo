@@ -23,7 +23,7 @@ export default (req, res, next) => {
         location = req.originalUrl;
     
     // TODO: make sure token is val && (!token || token == '')
-    if (auth.isNewUser(req.user)) {
+/*    if (auth.isNewUser(req.user)) {
 
         var [fname, lname] = req.user.name.split(' '), email = '';
         
@@ -32,7 +32,7 @@ export default (req, res, next) => {
           onSuccess: (res2) => auth.handleNewUser(req.user.user_id),
           onFailure: (res2) => console.log('Relay.Store.update fail')
         });
-    }
+    }*/
 
     match({ routes, location }, (error, redirectLocation, renderProps) => {
 

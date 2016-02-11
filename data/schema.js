@@ -27,18 +27,11 @@ var {nodeInterface, nodeField} = nodeDefinitions(
   (globalId) => {
     var {type, id} = fromGlobalId(globalId);
     if (type === 'User') {
-      return User.getUserById(id);
+      return User.getUserByUserId(id);
+    } else if (type === 'Viewer') {
+      return User.getUserByUserId(id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
     } else if (type === 'Profile') {
-      console.log("####", id);
       return User.getProfileById(id);
-    }
-    return null;
-  },
-  (obj) => {
-    if (obj instanceof User) {
-      return GraphQLUser;
-    } else if (obj instanceof Profile) {
-      return GraphQLProfile;
     }
     return null;
   }
@@ -46,6 +39,9 @@ var {nodeInterface, nodeField} = nodeDefinitions(
 
 var GraphQLProfile = new GraphQLObjectType({
   name: 'Profile',
+
+  isTypeOf: function(obj) { return !!obj.profile_id },
+
   fields: {
     id: globalIdField('Profile'),
     profile_id: {
@@ -67,8 +63,13 @@ var GraphQLProfile = new GraphQLObjectType({
 
 var GraphQLUser = new GraphQLObjectType({
   name: 'User',
+
+  isTypeOf: function(obj) { return !!obj.user_id },
+
   fields: {
-    id: globalIdField('User'),
+    id: globalIdField('User', (obj, info) => {
+      return obj.user_id;
+    }),
     uid: {
       type: GraphQLString,
     },
@@ -82,9 +83,27 @@ var GraphQLUser = new GraphQLObjectType({
     profile: {
       type: GraphQLProfile,
       resolve: user => {
-        console.log("@@@", user);
        return User.getUserProfile(user.user_id)
       }
+    },
+  },
+  interfaces: [nodeInterface],
+});
+
+var GraphQLViewer = new GraphQLObjectType({
+  name: 'Viewer',
+
+  isTypeOf: function(obj) { return !!obj.user },
+
+  fields: {
+    id: globalIdField('Viewer'),
+    user: {
+      type: GraphQLUser,
+      resolve: ({user}) => user,
+    },
+    authenticated: {
+      type: GraphQLBoolean,
+      resolve: ({authenticated}) => authenticated,
     },
   },
   interfaces: [nodeInterface],
@@ -94,15 +113,15 @@ var RootQuery = new GraphQLObjectType({
   name: 'Root',
   fields: {
     viewer: {
-      type: GraphQLUser,
+      type: GraphQLViewer,
       args: {
         user_id: {
           type: GraphQLString
         }
       },
-      resolve: (root, {user_id}) => User.getUserByUserId(user_id),
+      resolve: (root, {user_id}) => User.getUserByUserId(user_id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
     },
-/*    profile: {
+    profile: {
       type: GraphQLProfile,
       args: {
         profile_id: {
@@ -110,7 +129,7 @@ var RootQuery = new GraphQLObjectType({
         }
       },
       resolve: (root, {profile_id}) => User.getProfileByProfileId(profile_id),
-    },*/
+    },
     node: nodeField,
   },
 });

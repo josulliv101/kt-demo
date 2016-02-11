@@ -5,11 +5,7 @@ export default class App extends React.Component {
 //let App = React.createClass({ JSON.stringify(this.props.routes[0].authUser.name)
 
   render() {
-    var {children, routes, viewer} = this.props,
-        profile = viewer.profile || {};
-
-    var authUser = routes[0].authUser;
-    console.log('viewer!!!', profile);
+    var {id, authenticated, user} = this.props.viewer;
     return (
       <div className="test-123">
         <div className="container p-t-md">
@@ -17,25 +13,25 @@ export default class App extends React.Component {
             <div className="col-md-12">
               <h3>Kindturtle App</h3>
               {
-                authUser && 
+                authenticated && 
 
                 <ul className="media-list media-list-stream m-t">
                   <li className="media m-b">
                     <a className="media-left" href="#">
-                      <img className="media-object img-circle" src={profile.picture} />
+                      <img className="media-object img-circle" src={user.profile.picture} />
                     </a>
                     <div className="media-body">
-                      <strong>{profile.name }</strong> {viewer.user_id}
+                      <strong>{ user.profile.name }</strong> ({user.user_id})
                     </div>
                   </li>
                 </ul>
 
               }
               <p>
-                { authUser && <a className="btn btn-sm btn-primary m-r" href="/logout">logout</a> }
+                { authenticated && <a className="btn btn-sm btn-primary m-r" href="/logout">logout</a> }
                 <a className="btn btn-sm btn-primary"  href="/private">members only</a>
               </p>
-              {children}
+              {this.props.children}
             </div>
           </div>
         </div>
@@ -47,13 +43,15 @@ export default class App extends React.Component {
 export default Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
-      fragment on User {
+      fragment on Viewer {
         id, 
-        name, 
-        user_id, 
-        profile { 
-          name, 
-          picture 
+        authenticated, 
+        user {
+          user_id
+          profile {
+            name
+            picture
+          }
         }
       }
     `
