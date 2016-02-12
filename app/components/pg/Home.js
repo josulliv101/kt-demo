@@ -14,13 +14,12 @@ class Home extends React.Component {
   }
 }
 
-export default Relay.createContainer(Home, {
+export default Home; /*Relay.createContainer(Home, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        __typename
         id
       }
     `
   }
-});
+});*/

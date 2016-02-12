@@ -19,11 +19,11 @@ let configBrowser = {
       {test: /\.json$/, loaders: ['json']},
     ]
   },
-  node: {
+/*  node: {
     fs: "empty",
     net: "empty",
     tls: "empty"
-  },
+  },*/
   plugins: [
     new webpack.NoErrorsPlugin(),
     new webpack.EnvironmentPlugin(Object.keys(env)),

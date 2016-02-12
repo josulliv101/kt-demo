@@ -2,6 +2,7 @@ import express from 'express';
 import graphQL from './graphql'; // GraphQL Server
 import mongoose from 'mongoose';
 import path from 'path';
+import compress from 'compression';
 import auth from './authentication';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -11,6 +12,8 @@ import renderOnServer from '../app/renderOnServer';
 var {PORT, NODE_ENV, PWD, MONGOLAB_URI} = process.env;
 
 var router = express();
+
+router.use(compress());
 
 router.use(express.static(path.join(PWD, 'public')));
 router.use(cookieParser());

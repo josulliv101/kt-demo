@@ -12,18 +12,17 @@ var _user_id = null;
 var appRoute = {
     path: '/',
     component: App,
+    breadcrumb: 'kindturtle',
     user_id: _user_id, // Make available in preloadedData on client
     prepareParams: (params, route) => ({...params, user_id: _user_id }),
-    queries: ViewerQueries,
+    queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`},
     indexRoute: {
-        component: pgHome,
-        user_id: _user_id, // Make available in preloadedData on client
-        prepareParams: (params, route) => ({...params, user_id: _user_id }),
-        queries: ViewerQueries,
+        component: pgHome
     },
     childRoutes: [
         {
             path: 'about',
+            breadcrumb: 'about',
             component: pgAbout,
             user_id: _user_id, // Make available in preloadedData on client
             prepareParams: (params, route) => ({...params, user_id: _user_id }),
@@ -36,6 +35,7 @@ export default {
   getRoutes: (user_id, token) => {
     _user_id = user_id;
     appRoute.user_id = user_id;
+
     return [appRoute];
   }
 }
