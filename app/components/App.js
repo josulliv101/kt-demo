@@ -15,7 +15,7 @@ class App extends React.Component {
             <div className="col-md-12">
               <nav className="clearfix">
                 <div className="navbar-header">
-                  <a className="navbar-brand pos-r" href="index.html" style={{letterSpacing: '.06em', color: '#888', fontSize:'1.2em', top: 6 }}>
+                  <a className="navbar-brand pos-r" href="index.html" style={{letterSpacing: '.06em', color: '#888', fontSize:'1.3em', top: 6 }}>
                     { authenticated ? <span className="" style={{marginLeft: 36}}>#kindturtle</span> : "#kindturtle"} 
                   </a>
                 </div>
@@ -55,7 +55,7 @@ class App extends React.Component {
                 <div className="panel-body">
                   <div className="row">
                     {
-                      authenticated && <img className="pos-a img-circle" src={user.profile.picture} style={{border: '#999 1px solid', top: -35, left: 28, width: 28 }} />
+                      authenticated && <img className="pos-a img-circle" src={user.profile.picture} style={{border: '#999 1px solid', top: -36, left: 28, width: 32 }} />
                     }
                     <div className="col-md-2">
                       left
