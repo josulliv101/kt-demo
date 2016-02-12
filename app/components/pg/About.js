@@ -7,9 +7,12 @@ class About extends React.Component {
   render() {
     var {user} = this.props.viewer;
     return (
-      <div>
-        page is 'About'. An attr just on this page is <em>{user && user.profile && user.profile.profile_id}</em>.
-      </div> 
+      <div className="docs-content">
+        <h1 className="m-t-0">About</h1>
+        <p>Hey there! You’re looking at the docs for an Official Bootstrap Theme—thanks for your purchase! This theme has been lovingly crafted by Bootstrap’s founders and friends to help you build awesome projects on the web. Let’s dive in.</p>
+        <p>Each theme is designed as it’s own toolkit—a series of well designed, intuitive, and cohesive components—built on top of Bootstrap. If you’ve used Bootstrap itself, you’ll find this all super familiar, but with new aesthetics, new components, beautiful and extensive examples, and easy-to-use build tools and documentation.</p>
+        <button className="btn btn-lg btn-pill btn-primary-outline">{user && user.profile && user.profile.profile_id}</button>
+      </div>
     )
   }
 }

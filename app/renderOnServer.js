@@ -18,13 +18,11 @@ RelayStoreData.getDefaultInstance().getChangeEmitter().injectBatchingStrategy(()
 export default (req, res, next) => {
     
     let token = req.cookies[COOKIE_NAME],
-        user_id = req.user && req.user.user_id || '-1', // Must match Anonymous user id if not logged in
+        user_id = req.user && req.user.user_id || '-1', // If not logged in, must match Anonymous User Id which is set to -1 on server
         routes = router.getRoutes(user_id, null),
         location = req.originalUrl;
 
     match({ routes, location }, (error, redirectLocation, renderProps) => {
-
-console.log('&&&&&&&&', JSON.stringify(renderProps))
 
         if (error) {
             next(error);
