@@ -131,14 +131,14 @@ exports.addProfile = ({fname, lname, picture, profile_id, owner_id}) => {
 };
 
 function getProfileByProfileId(profile_id) {
-  console.log('DB::getProfileByProfileId', profile_id);
+  //console.log('DB::getProfileByProfileId', profile_id);
   return new Promise((resolve, reject) => {
 
     if (!profile_id) return resolve(null);
 
     Profile.findOne({profile_id: profile_id}).exec((err,res) => {
         
-        console.log('...results profile', res && res.profile_id);
+        //console.log('...results profile', res && res.profile_id);
 
         // No user found
         if (!res) return resolve(null);
@@ -151,19 +151,19 @@ function getProfileByProfileId(profile_id) {
 }
 
 function getUserProfile(user_id) {
-  console.log('DB::getUserProfile', user_id);
+  //console.log('DB::getUserProfile', user_id);
   return new Promise((resolve, reject) => {
 
     if (!user_id) return resolve(null);
 
     Profile.findOne({owner_id: user_id}).exec((err,res) => {
         
-        console.log('DB::getUserProfile results', res);
+        //console.log('DB::getUserProfile results', res);
 
         // No profile found
         if (!res) return resolve(null);
         
-        console.log('DB::getUserProfile RESOLVE', err, res);
+        //console.log('DB::getUserProfile RESOLVE', err, res);
 
         err ? reject(err) : resolve(res);
     });
@@ -178,7 +178,7 @@ function getUserByUserId(user_id) {
 
     User.findOne({user_id: user_id}).exec((err,res) => {
         
-        console.log('DB::getUserByUserId results', res);
+        //console.log('DB::getUserByUserId results', res);
 
         // No user found
         if (!res) return resolve(userAnonymous);
@@ -189,7 +189,7 @@ function getUserByUserId(user_id) {
 }
 
 function getProfileById(id) {
-  console.log('DB::getProfileById', id);
+  //console.log('DB::getProfileById', id);
   return new Promise((resolve, reject) => {
 
     if (!id) return resolve(null);
@@ -201,7 +201,7 @@ function getProfileById(id) {
 }
 
 function getUserById(id) {
-  console.log('DB::getUserById', id);
+  //console.log('DB::getUserById', id);
   return new Promise((resolve, reject) => {
 
     if (!id) return resolve(userAnonymous);

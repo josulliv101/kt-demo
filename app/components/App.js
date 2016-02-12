@@ -2,7 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import {Link} from 'react-router';
 
-export default class App extends React.Component {
+class App extends React.Component {
 //let App = React.createClass({ JSON.stringify(this.props.routes[0].authUser.name)
 
   render() {
@@ -22,7 +22,7 @@ export default class App extends React.Component {
                   </li>
                   <li>
                     <Link to="/about" activeClassName="active">
-                      <span className="icon icon-v-card" style={{marginRight: 6}}></span>
+                      <span className="icon icon-shield" style={{marginRight: 6}}></span>
                       About
                     </Link>
                   </li>

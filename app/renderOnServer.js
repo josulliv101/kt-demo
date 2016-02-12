@@ -19,22 +19,12 @@ export default (req, res, next) => {
     
     let token = req.cookies[COOKIE_NAME],
         user_id = req.user && req.user.user_id || null,
-        routes = router.getRoutes(user_id, { token, authUser: req.user }),
+        routes = router.getRoutes(user_id, null),
         location = req.originalUrl;
-    
-    // TODO: make sure token is val && (!token || token == '')
-/*    if (auth.isNewUser(req.user)) {
-
-        var [fname, lname] = req.user.name.split(' '), email = '';
-        
-        // TODO: async, need to wait to call match()
-        Relay.Store.update(new CreateNewUserMutation({fname, lname, email}), {
-          onSuccess: (res2) => auth.handleNewUser(req.user.user_id),
-          onFailure: (res2) => console.log('Relay.Store.update fail')
-        });
-    }*/
 
     match({ routes, location }, (error, redirectLocation, renderProps) => {
+
+console.log('&&&&&&&&', JSON.stringify(renderProps))
 
         if (error) {
             next(error);
@@ -57,7 +47,7 @@ export default (req, res, next) => {
                 <IsomorphicRouter.RouterContext {...renderProps} />
             );
             res.render(path.resolve(__dirname, '..', 'views', 'index.ejs'), {
-                preloadedData: JSON.stringify(renderProps),
+                preloadedData: JSON.stringify(data),
                 reactOutput
             });
         }

@@ -2,7 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 //import {Link} from 'react-router';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
 //var Home = React.createClass({
 
   render() {
@@ -14,13 +14,13 @@ export default class Home extends React.Component {
   }
 }
 
-/*export default Relay.createContainer(Home, {
+export default Relay.createContainer(Home, {
   fragments: {
     viewer: () => Relay.QL`
-      fragment on User {
+      fragment on Viewer {
         __typename
         id
       }
     `
   }
-});*/
+});

@@ -2,12 +2,12 @@
   "presets": ["es2015", "react", "stage-0"],
   "env": {
     "development": {
-      "plugins": ["babel-relay-plugin-loader", "transform-class-properties"],
+      "plugins": ["babel-relay-plugin-loader", "transform-runtime", "transform-class-properties"],
       "ignore": ['**/lib/**', '**/node_modules/**'],
       compact: false
     },
     "production": {
-      "plugins": ["transform-class-properties", "babel-relay-plugin-loader"],
+      "plugins": ["transform-class-properties", "transform-runtime", "babel-relay-plugin-loader"],
       "ignore": ['**/lib/**', '**/node_modules/**'],
       compact: false 
     }

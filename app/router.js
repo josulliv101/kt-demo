@@ -5,30 +5,37 @@ import Relay from 'react-relay';
 import App from './components/App';
 import pgHome from './components/pg/Home';
 import pgAbout from './components/pg/About';
+import ViewerQueries from './queries/ViewerQueries';
 
 var _user_id = null;
 
 var appRoute = {
     path: '/',
     component: App,
-    authUser: null,
-    token: null,
+    user_id: _user_id, // Make available in preloadedData on client
     prepareParams: (params, route) => ({...params, user_id: _user_id }),
-    queries: { viewer: () => Relay.QL`query { viewer(user_id: $user_id) }` },
+    queries: ViewerQueries,
     indexRoute: {
-        component: pgHome
+        component: pgHome,
+        user_id: _user_id, // Make available in preloadedData on client
+        prepareParams: (params, route) => ({...params, user_id: _user_id }),
+        queries: ViewerQueries,
     },
     childRoutes: [
         {
             path: 'about',
             component: pgAbout,
+            user_id: _user_id, // Make available in preloadedData on client
+            prepareParams: (params, route) => ({...params, user_id: _user_id }),
+            queries: ViewerQueries,
         }
     ]
 };
 
 export default {
-  getRoutes: (user_id, authData) => {
+  getRoutes: (user_id, token) => {
     _user_id = user_id;
-    return [Object.assign(appRoute, authData)];
+    appRoute.user_id = user_id;
+    return [appRoute];
   }
 }
