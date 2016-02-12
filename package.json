@@ -12,6 +12,7 @@
     "start": "babel-node  ./server/index.js",
     "start:dev": "nodemon --exec node -r dotenv/config -r babel-register -- ./server/index.js",
     "start:webpack": "webpack-dev-server --hot --progress --colors --content-base public/",
+    "webpack:build": "webpack -p",
     "update:schema": "babel-node ./scripts/updateSchema.js"
   },
   "author": "Joe Sullivan",

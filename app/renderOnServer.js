@@ -9,7 +9,7 @@ import router from './router';
 import auth from '../server/authentication';
 import CreateNewUserMutation from './mutations/CreateNewUserMutation';
 
-const {COOKIE_NAME, GRAPHQL_URL} = process.env;
+const {COOKIE_NAME, GRAPHQL_URL, STATIC_ASSETS_URL} = process.env;
 
 Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer(GRAPHQL_URL));
 
@@ -48,6 +48,7 @@ console.log('&&&&&&&&', JSON.stringify(renderProps))
             );
             res.render(path.resolve(__dirname, '..', 'views', 'index.ejs'), {
                 preloadedData: JSON.stringify(data),
+                assets_url: STATIC_ASSETS_URL,
                 reactOutput
             });
         }
