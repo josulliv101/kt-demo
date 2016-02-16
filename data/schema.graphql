@@ -1,3 +1,28 @@
+type Campaign implements Node {
+  id: ID!
+  campaign_id: String
+  owner_id: String
+  location: String
+  picture: String
+  title: String
+  description: String
+}
+
+input CreateNewCampaignInput {
+  title: String
+  description: String
+  picture: String
+  city: String
+  state: String
+  owner_id: String
+  clientMutationId: String!
+}
+
+type CreateNewCampaignPayload {
+  success: String
+  clientMutationId: String!
+}
+
 input CreateNewProfileInput {
   fname: String
   lname: String
@@ -40,12 +65,14 @@ type Profile implements Node {
 type Root {
   viewer(user_id: String): Viewer
   profile(profile_id: String): Profile
+  campaign(campaign_id: String): Campaign
   node(id: ID!): Node
 }
 
 type RootMutation {
   createNewUser(input: CreateNewUserInput!): CreateNewUserPayload
   createNewProfile(input: CreateNewProfileInput!): CreateNewProfilePayload
+  createNewCampaign(input: CreateNewCampaignInput!): CreateNewCampaignPayload
 }
 
 type User implements Node {
@@ -60,4 +87,5 @@ type Viewer implements Node {
   id: ID!
   user: User
   authenticated: Boolean
+  campaigns: [Campaign]
 }

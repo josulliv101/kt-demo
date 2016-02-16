@@ -25,9 +25,11 @@ router.use('/graphql', graphQL);
 
 // Throws error if no valid jwt
 router.use('/private', auth.middleware.private);
+router.use('/campaign/create', auth.middleware.private);
+
 
 // Adds user to req if valid jwt
-router.use('/*', auth.middleware.public.unless({path:['/private']}));
+router.use('/*', auth.middleware.public.unless({path:['/private','/campaign/create']}));
 
 router.use(auth.handleNotAuthenticatedError); // user not authenticated, send to login page
 

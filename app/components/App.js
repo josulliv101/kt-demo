@@ -6,7 +6,7 @@ class App extends React.Component {
 //let App = React.createClass({ JSON.stringify(this.props.routes[0].authUser.name)
 
   render() {
-    var {id, authenticated, user} = this.props.viewer;
+    var {id, authenticated, user, campaigns} = this.props.viewer;
     
     var breadcrumb = this.props.routes.filter(route => !!route.breadcrumb).map(route => route.breadcrumb).join(' / ');
     console.log('breadcrumb', breadcrumb);
@@ -18,7 +18,7 @@ class App extends React.Component {
               <nav className="clearfix">
                 <div className="navbar-header">
                   <a className="navbar-brand pos-r" href="index.html" style={{letterSpacing: '.06em', color: '#888', fontSize:'1.3em', top: 6 }}>
-                    { authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{breadcrumb}
+                    { authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ "kindturtle" || breadcrumb}
                   </a>
                 </div>
                 <ul className="nav nav-pills pull-right pos-r" style={{top: 12, marginRight: 12}}>
@@ -38,7 +38,7 @@ class App extends React.Component {
                     </a>
                   </li>
                   { 
-                    authenticated && user.profile
+                    authenticated && user && user.profile
 
                     ? <li className="pos-r" style={{top: -2}}>
                         <a href="/logout" className="p-l-0__" style={{fontSize: '1.2em'}}><span className="icon icon-dots-three-horizontal" /></a>
@@ -60,13 +60,13 @@ class App extends React.Component {
                 <div className="panel-body m-t" style={{minHeight: 550}}>
                   <div className="row">
                     {
-                      authenticated && user.profile && <img className="pos-a img-circle" src={user.profile.picture} style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', border: '#d3e0e9 1px solid', top: -36, left: 28, width: 32 }} />
+                      authenticated && user && user.profile && <img className="pos-a img-circle" src={user.profile.picture} style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', border: '#d3e0e9 1px solid', top: -36, left: 28, width: 32 }} />
                     }
                     <div className="col-md-2">
                       <ul id="markdown-toc" className="m-t-0">
                         <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
-                        <li className="active"><a href="#intro" id="markdown-toc-intro">Intro</a></li>
-                        <li><a href="#whats-included" id="markdown-toc-whats-included">What’s included</a>    <ul>
+                        <li className="active"><a href="#intro" id="markdown-toc-intro">Welcome</a></li>
+                        <li><Link to="/campaigns" activeClassName="active">Campaigns <span className="badge pull-right">{campaigns.length}</span></Link><ul>
                             <li><a href="#getting-started" id="markdown-toc-getting-started">Getting started</a></li>
                             <li><a href="#gulpfilejs" id="markdown-toc-gulpfilejs">Gulpfile.js</a></li>
                             <li><a href="#theme-source-code" id="markdown-toc-theme-source-code">Theme source code</a></li>
@@ -121,7 +121,14 @@ class App extends React.Component {
                       {this.props.children}                
                     </div>
                     <div className="col-md-3">
-                      <div className="alert alert-info alert-dismissible hidden-xs" role="alert">
+                      <div className="alert alert-danger alert-dismissible hidden-xs" role="alert">
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <a className="alert-link" href="profile/index.html">Please login</a>. You can use your facebook account.
+                      </div>
+                      <Link to="/campaign/create" activeClassName="hide" className="btn btn-success-outline btn-lg btn-block m-b">
+                        Create a New Campaign
+                      </Link>
+                      <div className="alert alert-info hidden-xs" role="alert">
                         <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                         <a className="alert-link" href="profile/index.html">Visit your profile!</a> Check your self, you aren't looking too good.
                       </div>
@@ -181,6 +188,9 @@ export default Relay.createContainer(App, {
       fragment on Viewer {
         id, 
         authenticated, 
+        campaigns {
+          id
+        }
         user {
           user_id
           profile {

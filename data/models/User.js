@@ -52,12 +52,42 @@ let ProfileSchema = new mongoose.Schema({
   }
 });
 
+let CampaignSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+    default: mongoose.Types.ObjectId
+  },
+  location: {
+    city: String,
+    state: String
+  },
+  title: {
+    type: String
+  },
+  description: {
+    type: String
+  },
+  picture: {
+    type: String
+  },
+  owner_id: {
+    type: String,
+    required: true,
+    index: true
+  }
+});
+
 UserSchema.set('toJSON', { getters: true, virtuals: true });
 UserSchema.set('toObject', { getters: true, virtuals: true });
 
 ProfileSchema.set('toJSON', { getters: true, virtuals: true });
 ProfileSchema.set('toObject', { getters: true, virtuals: true });
 
+CampaignSchema.set('toJSON', { getters: true, virtuals: true });
+CampaignSchema.set('toObject', { getters: true, virtuals: true });
 
 UserSchema.virtual('name.full').get(function() {
   var {name} = this;
@@ -81,11 +111,26 @@ ProfileSchema.virtual('name.full').get(function() {
   return name.first + ' ' + name.last;
 });
 
+CampaignSchema.virtual('type').get(function() {
+  return 'Campaign';
+});
+
+CampaignSchema.virtual('location.full').get(function() {
+  var {location} = this;
+  return location.city + ' ' + location.state;
+});
+
+CampaignSchema.virtual('campaign_id').get(function() {
+  return this.id;
+});
+
 let User = mongoose.model('User', UserSchema);
 let Profile = mongoose.model('Profile', ProfileSchema);
+let Campaign = mongoose.model('Campaign', CampaignSchema);
 
 exports.UserSchema = User;
 exports.ProfileSchema = Profile;
+exports.CampaignSchema = Campaign;
 
 let userAnonymous = new User({ user_id: -1, name: { first: 'Anonymous', last: 'User' }});
 userAnonymous.anonymous = true;
@@ -125,6 +170,27 @@ exports.addProfile = ({fname, lname, picture, profile_id, owner_id}) => {
   return new Promise((resolve, reject) => {
     
     newProfile.save((err, res) => err ? reject(err) : resolve({ profile: res  }) );
+
+  });
+
+};
+
+exports.addCampaign = ({title, description, picture, city, state, owner_id}) => {
+  console.log("addCampaign", arguments);
+  var newCampaign = new Campaign({
+    location: {
+      city: city,
+      state: state
+    },
+    picture: picture,
+    title: title,
+    description: description,
+    owner_id: owner_id
+  });
+
+  return new Promise((resolve, reject) => {
+    
+    newCampaign.save((err, res) => err ? reject(err) : resolve({ campaign: res  }) );
 
   });
 
@@ -188,6 +254,18 @@ function getUserByUserId(user_id) {
   });
 }
 
+function getCampaignById(id) {
+  //console.log('DB::getProfileById', id);
+  return new Promise((resolve, reject) => {
+
+    if (!id) return resolve(null);
+
+    Campaign.findOne({id:id}).exec((err,res) => {
+        err ? reject(err) : resolve(res);
+    });
+  });
+}
+
 function getProfileById(id) {
   //console.log('DB::getProfileById', id);
   return new Promise((resolve, reject) => {
@@ -212,6 +290,10 @@ function getUserById(id) {
   });
 }
 
+function getListOfCampaigns() {
+  return Campaign.find({});
+}
+
 function getListOfUsers() {
   return new Promise((resolve, reject) => {
     User.find({}).populate('users').exec((err, res) => {
@@ -220,8 +302,11 @@ function getListOfUsers() {
   });
 }
 
+exports.getCampaigns = getListOfCampaigns;
 exports.getUserById = getUserById;
 exports.getProfileById = getProfileById;
+exports.getCampaignById = getCampaignById;
 exports.getUserProfile = getUserProfile;
 exports.getUserByUserId = getUserByUserId;
 exports.getProfileByProfileId = getProfileByProfileId;
+

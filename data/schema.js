@@ -32,10 +32,44 @@ var {nodeInterface, nodeField} = nodeDefinitions(
       return User.getUserByUserId(id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
     } else if (type === 'Profile') {
       return User.getProfileById(id);
+    } else if (type === 'Campaign') {
+      return User.getCampaignById(id);
     }
     return null;
   }
 );
+
+var GraphQLCampaign = new GraphQLObjectType({
+  name: 'Campaign',
+
+  isTypeOf: function(obj) { return !!obj.campaign_id },
+
+  fields: {
+    id: globalIdField('Campaign', (obj, info) => {
+      return obj.campaign_id;
+    }),
+    campaign_id: {
+      type: GraphQLString,
+    },
+    owner_id: {
+      type: GraphQLString,
+    },
+    location: {
+      type: GraphQLString,
+      resolve: campaign => campaign.location.full,
+    },
+    picture: {
+      type: GraphQLString,
+    },
+    title: {
+      type: GraphQLString,
+    },
+    description: {
+      type: GraphQLString,
+    }
+  },
+  interfaces: [nodeInterface],
+});
 
 var GraphQLProfile = new GraphQLObjectType({
   name: 'Profile',
@@ -105,6 +139,10 @@ var GraphQLViewer = new GraphQLObjectType({
       type: GraphQLBoolean,
       resolve: ({authenticated}) => authenticated,
     },
+    campaigns: {
+      type: new GraphQLList(GraphQLCampaign),
+      resolve: User.getCampaigns
+    },
   },
   interfaces: [nodeInterface],
 });
@@ -129,6 +167,15 @@ var RootQuery = new GraphQLObjectType({
         }
       },
       resolve: (root, {profile_id}) => User.getProfileByProfileId(profile_id),
+    },
+    campaign: {
+      type: GraphQLCampaign,
+      args: {
+        campaign_id: {
+          type: GraphQLString
+        }
+      },
+      resolve: (root, {campaign_id}) => User.getCampaignById(campaign_id),
     },
     node: nodeField,
   },
@@ -179,13 +226,38 @@ var CreateNewProfileMutation = mutationWithClientMutationId({
  
 });
 
+var CreateNewCampaignMutation = mutationWithClientMutationId({
+
+  name: 'CreateNewCampaign',
+
+  inputFields: {
+    title: {type: GraphQLString },
+    description: {type: GraphQLString },
+    picture: {type: GraphQLString },
+    city: {type: GraphQLString },
+    state: {type: GraphQLString },
+    owner_id: {type: GraphQLString }
+  },
+ 
+  outputFields: {
+    success: {
+      type: GraphQLString,
+      resolve: ({campaign}) => campaign.id
+    },
+  },
+   
+  mutateAndGetPayload: User.addCampaign
+ 
+});
+
 const RootMutation = new GraphQLObjectType({
 
   name: "RootMutation",
 
   fields: () => ({
     createNewUser: CreateNewUserMutation,
-    createNewProfile: CreateNewProfileMutation
+    createNewProfile: CreateNewProfileMutation,
+    createNewCampaign: CreateNewCampaignMutation
   })
 
 });
