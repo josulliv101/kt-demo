@@ -1,15 +1,50 @@
 import React from 'react';
 import Relay from 'react-relay';
 import {Link} from 'react-router';
+import registry from '../utils/registry';
+
+function getStoreState() {
+
+  var {fetching} = registry.get('Store')().getState();
+
+  return {
+    fetching
+  };
+}
 
 class App extends React.Component {
 //let App = React.createClass({ JSON.stringify(this.props.routes[0].authUser.name)
 
+  constructor(props) {
+    super(props);
+    this.state = {fetching: false};
+  }
+
+  onChange() {
+    console.log('App Compopnent CHANGED!', getStoreState());
+    this.setState(getStoreState());
+  }
+
+  componentDidMount() {
+    var store = registry.get('Store')();
+    console.log('App Compopnent componentDidMount', store);
+    store.addChangeListener(this.onChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    var store = registry.get('Store')();
+    console.log('App Compopnent componentWillUnmount', store);
+    store.removeChangeListener(this.onChange.bind(this));
+  }
+
   render() {
     var {id, authenticated, user, campaigns} = this.props.viewer;
-    
+    var {fetching} = this.state;
+    var activeStyle = {borderLeft: '2px solid #3097d1' };
     var breadcrumb = this.props.routes.filter(route => !!route.breadcrumb).map(route => route.breadcrumb).join(' / ');
-    console.log('breadcrumb', breadcrumb);
+    
+    //console.log('STATE', this.props.authenticated);
+
     return (
       <div className="test-123 m-t">
         <div className="container">
@@ -18,7 +53,7 @@ class App extends React.Component {
               <nav className="clearfix">
                 <div className="navbar-header">
                   <a className="navbar-brand pos-r" href="index.html" style={{letterSpacing: '.06em', color: '#888', fontSize:'1.3em', top: 6 }}>
-                    { authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ "kindturtle" || breadcrumb}
+                    { authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ breadcrumb || "kindturtle"}
                   </a>
                 </div>
                 <ul className="nav nav-pills pull-right pos-r" style={{top: 12, marginRight: 12}}>
@@ -49,12 +84,12 @@ class App extends React.Component {
                 </ul>
               </nav>
               <div className="pos-a img-circle" style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', background: '#3097d1', border: '#d3e0e9 1px solid', top: 0, left: '50%', width: 42, height: 42, marginLeft: '-21px' }}>
-                <img className="img-responsive pos-r" src="/img/kt.png" style={{width: 27, top: 8, left: 6}} /> 
+                <img className={`img-responsive pos-r animated bounce ${fetching ? 'infinite' : ''}`} src="/img/kt.png" style={{width: 27, top: 8, left: 6 }} /> 
               </div>        
             </div>
           </div>
 
-          <div className="row">
+          <div className="row" style={{opacity: fetching ? '.5' : 1 }}>
             <div className="col-md-12">
               <div className="panel panel-default visible-md-block visible-lg-block m-b-0">
                 <div className="panel-body m-t" style={{minHeight: 550}}>
@@ -65,8 +100,9 @@ class App extends React.Component {
                     <div className="col-md-2">
                       <ul id="markdown-toc" className="m-t-0">
                         <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
-                        <li className="active"><a href="#intro" id="markdown-toc-intro">Welcome</a></li>
-                        <li><Link to="/campaigns" activeClassName="active">Campaigns <span className="badge pull-right">{campaigns.length}</span></Link><ul>
+                        <li><Link to="/" activeStyle={activeStyle} onlyActiveOnIndex={true}>Welcome</Link></li>
+                        <li><Link to="/about" activeStyle={activeStyle}>About</Link></li>
+                        <li><Link to="/campaigns" activeStyle={activeStyle}>Campaigns <span className="badge pull-right">{campaigns.length}</span></Link><ul>
                             <li><a href="#getting-started" id="markdown-toc-getting-started">Getting started</a></li>
                             <li><a href="#gulpfilejs" id="markdown-toc-gulpfilejs">Gulpfile.js</a></li>
                             <li><a href="#theme-source-code" id="markdown-toc-theme-source-code">Theme source code</a></li>

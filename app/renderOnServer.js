@@ -42,13 +42,17 @@ export default (req, res, next) => {
 
         function render(data) {
             const reactOutput = ReactDOMServer.renderToString(
-                <IsomorphicRouter.RouterContext {...renderProps} />
+                <IsomorphicRouter.RouterContext {...renderProps} createElement={createElement} />
             );
             res.render(path.resolve(__dirname, '..', 'views', 'index.ejs'), {
                 preloadedData: JSON.stringify(data),
                 assets_url: STATIC_ASSETS_URL,
                 reactOutput
             });
+        }
+
+        function createElement(Component, props) {
+            return <Component {...props} authenticated={req.user && req.user.user_id} />
         }
     });
 };

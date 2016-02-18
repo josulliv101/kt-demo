@@ -37,6 +37,7 @@ class Campaigns extends React.Component {
 }
 
 export default Relay.createContainer(Campaigns, {
+  onReadyStateChange: () => console.log('test@@@'),
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {

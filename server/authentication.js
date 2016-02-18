@@ -122,7 +122,7 @@ export default {
          //console.log('Oh no! error', err);
        } else {
          let attrs = jwtDecode(resp.body.id_token);
-         console.info('yay got ', attrs);
+         //console.info('yay got ', attrs);
          
          if (attrs.user_metadata.created) {
            res.cookie(COOKIE_NAME, resp.body.id_token, { path: '/', httpOnly: true }); // , httpOnly: true

@@ -11,13 +11,20 @@ import pgCampaignCreate from './components/pg/CampaignCreate';
 import ViewerQueries from './queries/ViewerQueries';
 
 var _user_id = null;
+var _isFetching = false;
 
 var appRoute = {
     path: '/',
     component: App,
     breadcrumb: 'kindturtle',
+    isFetching: _isFetching,
+/*    renderFetched: (obj, attrs, arg) => {
+        //debugger;
+        return //<div>{JSON.stringify(attrs)}</div>;
+    },*/
+
     user_id: _user_id, // Make available in preloadedData on client
-    prepareParams: (params, route) => ({...params, user_id: _user_id }),
+    prepareParams: (params, route) => ({...params, user_id: _user_id, isFetching: _isFetching }),
     queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`},
     indexRoute: {
         component: pgHome
@@ -37,7 +44,8 @@ var appRoute = {
             component: pgCampaigns,
             user_id: _user_id, // Make available in preloadedData on client
             prepareParams: (params, route) => ({...params, user_id: _user_id }),
-            queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
+            queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`},
+            renderLoading: () => <div>loading</div>
         },
         {
             path: 'campaign/create',
@@ -65,5 +73,6 @@ export default {
     appRoute.user_id = user_id;
 
     return [appRoute];
-  }
+  },
+  setIsFetching: isFetching => _isFetching = isFetching
 }
