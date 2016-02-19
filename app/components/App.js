@@ -38,12 +38,13 @@ class App extends React.Component {
   }
 
   render() {
-    var {id, authenticated, user, campaigns} = this.props.viewer;
+    var {id, user, campaigns} = this.props.viewer;
+    var {authenticated} = this.props;
     var {fetching} = this.state;
     var activeStyle = {borderLeft: '2px solid #3097d1' };
     var breadcrumb = this.props.routes.filter(route => !!route.breadcrumb).map(route => route.breadcrumb).join(' / ');
     
-    //console.log('STATE', this.props.authenticated);
+    console.log('APP::render', this.props.authenticated);
 
     return (
       <div className="test-123 m-t">
@@ -53,7 +54,7 @@ class App extends React.Component {
               <nav className="clearfix">
                 <div className="navbar-header">
                   <a className="navbar-brand pos-r" href="index.html" style={{letterSpacing: '.06em', color: '#888', fontSize:'1.3em', top: 6 }}>
-                    { authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ breadcrumb || "kindturtle"}
+                    { authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ "kindturtle" || breadcrumb}
                   </a>
                 </div>
                 <ul className="nav nav-pills pull-right pos-r" style={{top: 12, marginRight: 12}}>
@@ -84,12 +85,12 @@ class App extends React.Component {
                 </ul>
               </nav>
               <div className="pos-a img-circle" style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', background: '#3097d1', border: '#d3e0e9 1px solid', top: 0, left: '50%', width: 42, height: 42, marginLeft: '-21px' }}>
-                <img className={`img-responsive pos-r animated bounce ${fetching ? 'infinite' : ''}`} src="/img/kt.png" style={{width: 27, top: 8, left: 6 }} /> 
+                <img className={`img-responsive pos-r animated ${fetching ? 'bounce infinite' : ''}`} src="/img/kt.png" style={{width: 27, top: 8, left: 6 }} /> 
               </div>        
             </div>
           </div>
 
-          <div className="row" style={{opacity: fetching ? '.5' : 1 }}>
+          <div className="row pos-r">
             <div className="col-md-12">
               <div className="panel panel-default visible-md-block visible-lg-block m-b-0">
                 <div className="panel-body m-t" style={{minHeight: 550}}>
@@ -97,6 +98,7 @@ class App extends React.Component {
                     {
                       authenticated && user && user.profile && <img className="pos-a img-circle" src={user.profile.picture} style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', border: '#d3e0e9 1px solid', top: -36, left: 28, width: 32 }} />
                     }
+                    { fetching && <div className="pos-a" style={{top: 0, top: 0, width: '100%', height: '100%', background: '#fff', zIndex: 999, opacity: '.7'}} />}
                     <div className="col-md-2">
                       <ul id="markdown-toc" className="m-t-0">
                         <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>

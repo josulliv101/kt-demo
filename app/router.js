@@ -27,15 +27,16 @@ var appRoute = {
     prepareParams: (params, route) => ({...params, user_id: _user_id, isFetching: _isFetching }),
     queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`},
     indexRoute: {
-        component: pgHome
+        component: pgHome,
+        queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
     },
     childRoutes: [
         {
             path: 'about',
             breadcrumb: 'about',
             component: pgAbout,
-            user_id: _user_id, // Make available in preloadedData on client
-            prepareParams: (params, route) => ({...params, user_id: _user_id }),
+            //user_id: _user_id, // Make available in preloadedData on client
+            //prepareParams: (params, route) => ({...params, user_id: _user_id }),
             queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
         },
         {
@@ -45,7 +46,9 @@ var appRoute = {
             user_id: _user_id, // Make available in preloadedData on client
             prepareParams: (params, route) => ({...params, user_id: _user_id }),
             queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`},
-            renderLoading: () => <div>loading</div>
+            renderLoading: function() {
+                return undefined;
+            }
         },
         {
             path: 'campaign/create',

@@ -48,7 +48,7 @@ class Home extends React.Component {
   }
 }
 
-export default Home; /*Relay.createContainer(Home, {
+export default Relay.createContainer(Home, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
@@ -56,4 +56,4 @@ export default Home; /*Relay.createContainer(Home, {
       }
     `
   }
-});*/
+})

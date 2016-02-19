@@ -80,7 +80,7 @@ class BaseApp {
   renderToDOM (el, state) { //debug('renderToDOM()');
     
     var id = (state[0].result.viewer.user && state[0].result.viewer.user.user_id) || (state[1].result.viewer.user && state[1].result.viewer.user.user_id);
-    
+
     var routes = router.getRoutes(id, null);
 
     IsomorphicRelay.injectPreparedData(state);
