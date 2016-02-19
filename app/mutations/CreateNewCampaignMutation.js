@@ -32,13 +32,8 @@ export default class CreateNewCampaignMutation extends Relay.Mutation {
   getFatQuery () {
     return Relay.QL`
       fragment on CreateNewCampaignPayload {
-        success,
         viewer {
-          campaigns {
-            title
-            location,
-            owner_id
-          }
+          campaigns
         }
       }
     `
