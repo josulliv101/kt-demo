@@ -2,6 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import {Link} from 'react-router';
 import registry from '../utils/registry';
+import CampaignsCard from './cards/CampaignsCard';
 
 function getStoreState() {
 
@@ -39,7 +40,7 @@ class App extends React.Component {
 
   render() {
     var {id, user, campaigns} = this.props.viewer;
-    var {authenticated} = this.props;
+    var {authenticated, viewer} = this.props;
     var {fetching} = this.state;
     var activeStyle = {borderLeft: '2px solid #3097d1' };
     var breadcrumb = this.props.routes.filter(route => !!route.breadcrumb).map(route => route.breadcrumb).join(' / ');
@@ -172,18 +173,7 @@ class App extends React.Component {
                           <button className="btn btn-primary-outline btn-sm">Buy a ticket</button>
                         </div>
                       </div>
-                      <div className="panel panel-default visible-md-block visible-lg-block">
-                        <div className="panel-body">
-                          <h5 className="m-t-0">About</h5>
-                          <ul className="list-unstyled list-spaced">
-                            <li><span className="text-muted icon icon-calendar m-r"></span>Went to <a href="#">Oh, Canada</a>
-                            </li><li><span className="text-muted icon icon-users m-r"></span>Became friends with <a href="#">Obama</a>
-                            </li><li><span className="text-muted icon icon-github m-r"></span>Worked at <a href="#">Github</a>
-                            </li><li><span className="text-muted icon icon-home m-r"></span>Lives in <a href="#">San Francisco, CA</a>
-                            </li><li><span className="text-muted icon icon-location-pin m-r"></span>From <a href="#">Seattle, WA</a>
-                          </li></ul>
-                        </div>
-                      </div>
+                      {<CampaignsCard campaigns={campaigns.slice(0, 3)} />}
                     </div>
                   </div>
                 </div>
@@ -223,6 +213,8 @@ export default Relay.createContainer(App, {
         authenticated, 
         campaigns {
           id
+          title
+          location
         }
         user {
           user_id

@@ -2,6 +2,7 @@ type Campaign implements Node {
   id: ID!
   campaign_id: String
   owner_id: String
+  owner: User
   location: String
   picture: String
   title: String

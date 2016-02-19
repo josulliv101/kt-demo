@@ -39,38 +39,6 @@ var {nodeInterface, nodeField} = nodeDefinitions(
   }
 );
 
-var GraphQLCampaign = new GraphQLObjectType({
-  name: 'Campaign',
-
-  isTypeOf: function(obj) { return !!obj.campaign_id },
-
-  fields: {
-    id: globalIdField('Campaign', (obj, info) => {
-      return obj.campaign_id;
-    }),
-    campaign_id: {
-      type: GraphQLString,
-    },
-    owner_id: {
-      type: GraphQLString,
-    },
-    location: {
-      type: GraphQLString,
-      resolve: campaign => campaign.location.full,
-    },
-    picture: {
-      type: GraphQLString,
-    },
-    title: {
-      type: GraphQLString,
-    },
-    description: {
-      type: GraphQLString,
-    }
-  },
-  interfaces: [nodeInterface],
-});
-
 var GraphQLProfile = new GraphQLObjectType({
   name: 'Profile',
 
@@ -120,6 +88,45 @@ var GraphQLUser = new GraphQLObjectType({
        return User.getUserProfile(user.user_id)
       }
     },
+  },
+  interfaces: [nodeInterface],
+});
+
+var GraphQLCampaign = new GraphQLObjectType({
+  name: 'Campaign',
+
+  isTypeOf: function(obj) { return !!obj.campaign_id },
+
+  fields: {
+    id: globalIdField('Campaign', (obj, info) => {
+      return obj.campaign_id;
+    }),
+    campaign_id: {
+      type: GraphQLString,
+    },
+    owner_id: {
+      type: GraphQLString,
+    },
+    owner: {
+      type: GraphQLUser,
+      resolve: campaign => {
+        console.log('owner!', campaign.owner_id);
+        return User.getUserByUserId(campaign.owner_id)
+      }
+    },
+    location: {
+      type: GraphQLString,
+      resolve: campaign => campaign.location.full,
+    },
+    picture: {
+      type: GraphQLString,
+    },
+    title: {
+      type: GraphQLString,
+    },
+    description: {
+      type: GraphQLString,
+    }
   },
   interfaces: [nodeInterface],
 });

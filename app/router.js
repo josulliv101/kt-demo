@@ -45,10 +45,7 @@ var appRoute = {
             component: pgCampaigns,
             user_id: _user_id, // Make available in preloadedData on client
             prepareParams: (params, route) => ({...params, user_id: _user_id }),
-            queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`},
-            renderLoading: function() {
-                return undefined;
-            }
+            queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
         },
         {
             path: 'campaign/create',

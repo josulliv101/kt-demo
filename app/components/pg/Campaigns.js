@@ -23,7 +23,7 @@ class Campaigns extends React.Component {
                 return (
                   <tr key={index}>
                     <td>{campaign.title}</td>
-                    <td>{campaign.owner_id}</td>
+                    <td>{campaign.owner && campaign.owner.name}</td>
                     <td>{campaign.location}</td>
                   </tr>                  
                 )
@@ -37,12 +37,14 @@ class Campaigns extends React.Component {
 }
 
 export default Relay.createContainer(Campaigns, {
-  onReadyStateChange: () => console.log('test@@@'),
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
         campaigns {
           owner_id
+          owner {
+            name
+          }
           title
           location
         }

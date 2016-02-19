@@ -77,6 +77,9 @@ let CampaignSchema = new mongoose.Schema({
     type: String,
     required: true,
     index: true
+  },
+  owner: {
+    type: String
   }
 });
 
