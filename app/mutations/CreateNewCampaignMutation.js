@@ -5,13 +5,7 @@ export default class CreateNewCampaignMutation extends Relay.Mutation {
   static fragments = {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        __typename
         id
-        campaigns {
-          title
-          location,
-          owner_id
-        }
       }
     `
   };
@@ -38,11 +32,18 @@ export default class CreateNewCampaignMutation extends Relay.Mutation {
   getFatQuery () {
     return Relay.QL`
       fragment on CreateNewCampaignPayload {
-        success 
+        success,
+        viewer {
+          campaigns {
+            title
+            location,
+            owner_id
+          }
+        }
       }
     `
   }
-
+ 
  
 /*  getConfigs() {
 
@@ -53,7 +54,7 @@ export default class CreateNewCampaignMutation extends Relay.Mutation {
     return [{
       type: 'FIELDS_CHANGE',
       fieldIDs: {
-        //viewer: this.props.viewer.id,
+        viewer: this.props.viewer.id
       },
     }];
   }

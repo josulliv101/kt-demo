@@ -244,6 +244,10 @@ var CreateNewCampaignMutation = mutationWithClientMutationId({
       type: GraphQLString,
       resolve: ({campaign}) => campaign.id
     },
+    viewer: {
+      type: GraphQLViewer,
+      resolve: ({campaign}) => User.getUserByUserId(campaign.owner_id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
+    }
   },
    
   mutateAndGetPayload: User.addCampaign

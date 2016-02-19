@@ -53,9 +53,9 @@ class App extends React.Component {
             <div className="col-md-12">
               <nav className="clearfix">
                 <div className="navbar-header">
-                  <a className="navbar-brand pos-r" href="index.html" style={{letterSpacing: '.06em', color: '#888', fontSize:'1.3em', top: 6 }}>
+                  <Link className="navbar-brand pos-r" to="/" style={{letterSpacing: '.06em', color: '#888', fontSize:'1.3em', top: 6 }}>
                     { authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ "kindturtle" || breadcrumb}
-                  </a>
+                  </Link>
                 </div>
                 <ul className="nav nav-pills pull-right pos-r" style={{top: 12, marginRight: 12}}>
                   <li>
@@ -67,11 +67,6 @@ class App extends React.Component {
                     <Link to="/about" activeClassName="active">
                       About
                     </Link>
-                  </li>
-                  <li>
-                    <a href="#">
-                      Contact
-                    </a>
                   </li>
                   { 
                     authenticated && user && user.profile
@@ -85,7 +80,7 @@ class App extends React.Component {
                 </ul>
               </nav>
               <div className="pos-a img-circle" style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', background: '#3097d1', border: '#d3e0e9 1px solid', top: 0, left: '50%', width: 42, height: 42, marginLeft: '-21px' }}>
-                <img className={`img-responsive pos-r animated ${fetching ? 'bounce infinite' : ''}`} src="/img/kt.png" style={{width: 27, top: 8, left: 6 }} /> 
+                <img className={`img-responsive pos-r animated ${fetching ? 'tada infinite' : ''}`} src="/img/kt.png" style={{width: 27, top: 8, left: 6 }} /> 
               </div>        
             </div>
           </div>

@@ -20,6 +20,7 @@ input CreateNewCampaignInput {
 
 type CreateNewCampaignPayload {
   success: String
+  viewer: Viewer
   clientMutationId: String!
 }
 

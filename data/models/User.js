@@ -176,7 +176,7 @@ exports.addProfile = ({fname, lname, picture, profile_id, owner_id}) => {
 };
 
 exports.addCampaign = ({title, description, picture, city, state, owner_id}) => {
-  console.log("addCampaign", arguments);
+  console.log("addCampaign", owner_id);
   var newCampaign = new Campaign({
     location: {
       city: city,
