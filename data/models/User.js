@@ -65,7 +65,8 @@ let CampaignSchema = new mongoose.Schema({
     state: String
   },
   title: {
-    type: String
+    type: String,
+    required: true,
   },
   description: {
     type: String
