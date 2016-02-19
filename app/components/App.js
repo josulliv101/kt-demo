@@ -2,7 +2,9 @@ import React from 'react';
 import Relay from 'react-relay';
 import {Link} from 'react-router';
 import registry from '../utils/registry';
+import {BasicCard, AlertCard} from './cards/CardTypes';
 import CampaignsCard from './cards/CampaignsCard';
+import NextGiftCard from './cards/NextGiftCard';
 
 function getStoreState() {
 
@@ -59,7 +61,7 @@ class App extends React.Component {
                   </Link>
                 </div>
                 <ul className="nav nav-pills pull-right pos-r" style={{top: 12, marginRight: 12}}>
-                  <li>
+                  {/*<li>
                     <Link to="/" activeClassName="active">
                       Home
                     </Link>
@@ -68,15 +70,15 @@ class App extends React.Component {
                     <Link to="/about" activeClassName="active">
                       About
                     </Link>
-                  </li>
+                  </li>*/}
                   { 
                     authenticated && user && user.profile
 
                     ? <li className="pos-r" style={{top: -2}}>
-                        <a href="/logout" className="p-l-0__" style={{fontSize: '1.2em'}}><span className="icon icon-dots-three-horizontal" /></a>
+                        <a href="/logout" className="p-l-0__ text-muted" style={{fontSize: '1.4em'}}><span className="icon icon-cog" /></a>
                       </li>
 
-                    : <a className="btn btn-xs btn-pill btn-info-outline pos-r m-l" style={{ padding: 'inherit 0', top: 9, right: 0}} href="/private">Login</a>
+                    : <a className="btn btn-xs btn-pill__ btn-info-outline pos-r m-l" style={{ padding: 'inherit 0', top: 9, right: 6}} href="/private">Login</a>
                   }
                 </ul>
               </nav>
@@ -98,82 +100,40 @@ class App extends React.Component {
                     <div className="col-md-2">
                       <ul id="markdown-toc" className="m-t-0">
                         <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
-                        <li><Link to="/" activeStyle={activeStyle} onlyActiveOnIndex={true}>Welcome</Link></li>
+                        <li><Link to="/" activeStyle={activeStyle} onlyActiveOnIndex={true}>Home</Link></li>
+                        <li><Link to="/campaigns" activeStyle={activeStyle}>Campaigns <span className="badge pull-right">{campaigns.length}</span></Link></li>
                         <li><Link to="/about" activeStyle={activeStyle}>About</Link></li>
-                        <li><Link to="/campaigns" activeStyle={activeStyle}>Campaigns <span className="badge pull-right">{campaigns.length}</span></Link><ul>
-                            <li><a href="#getting-started" id="markdown-toc-getting-started">Getting started</a></li>
-                            <li><a href="#gulpfilejs" id="markdown-toc-gulpfilejs">Gulpfile.js</a></li>
-                            <li><a href="#theme-source-code" id="markdown-toc-theme-source-code">Theme source code</a></li>
-                          </ul>
-                        </li>
-                        <li><a href="#custom-builds" id="markdown-toc-custom-builds">Custom builds</a></li>
-                        <li><a href="#basic-template" id="markdown-toc-basic-template">Basic template</a></li>
-                        <li><a href="#utilities" id="markdown-toc-utilities">Utilities</a>    <ul>
-                            <li><a href="#positioning" id="markdown-toc-positioning">Positioning</a></li>
-                            <li><a href="#width" id="markdown-toc-width">Width</a></li>
-                            <li><a href="#margin-and-padding" id="markdown-toc-margin-and-padding">Margin and padding</a></li>
-                            <li><a href="#responsive-text-alignment" id="markdown-toc-responsive-text-alignment">Responsive text alignment</a></li>
-                          </ul>
-                        </li>
-                        <li><a href="#components" id="markdown-toc-components">Components</a>    <ul>
-                            <li><a href="#entypo" id="markdown-toc-entypo">Entypo</a>        <ul>
-                                <li><a href="#available-icons" id="markdown-toc-available-icons">Available icons</a></li>
-                                <li><a href="#examples" id="markdown-toc-examples">Examples</a></li>
-                              </ul>
-                            </li>
-                            <li><a href="#outline-buttons" id="markdown-toc-outline-buttons">Outline buttons</a></li>
-                            <li><a href="#pill-buttons" id="markdown-toc-pill-buttons">Pill buttons</a></li>
-                            <li><a href="#avatar-list" id="markdown-toc-avatar-list">Avatar list</a></li>
-                            <li><a href="#growl" id="markdown-toc-growl">Growl</a></li>
-                            <li><a href="#profile-header" id="markdown-toc-profile-header">Profile header</a></li>
-                            <li><a href="#panel-profile" id="markdown-toc-panel-profile">Panel profile</a></li>
-                            <li><a href="#panel-link-list" id="markdown-toc-panel-link-list">Panel link list</a></li>
-                            <li><a href="#media-list-steam" id="markdown-toc-media-list-steam">Media list steam</a></li>
-                            <li><a href="#media-list-conversation" id="markdown-toc-media-list-conversation">Media list conversation</a></li>
-                            <li><a href="#media-list-users" id="markdown-toc-media-list-users">Media list users</a></li>
-                            <li><a href="#custom-form-controls" id="markdown-toc-custom-form-controls">Custom form controls</a></li>
-                            <li><a href="#custom-modals" id="markdown-toc-custom-modals">Custom Modals</a></li>
-                            <li><a href="#custom-containers" id="markdown-toc-custom-containers">Custom containers</a></li>
-                          </ul>
-                        </li>
-                        <li><a href="#plugins" id="markdown-toc-plugins">Plugins</a>    <ul>
-                            <li><a href="#image-grids" id="markdown-toc-image-grids">Image grids</a>        <ul>
-                                <li><a href="#options" id="markdown-toc-options">Options</a></li>
-                                <li><a href="#javascript-api" id="markdown-toc-javascript-api">JavaScript API</a></li>
-                                <li><a href="#data-api" id="markdown-toc-data-api">Data Api</a></li>
-                              </ul>
-                            </li>
-                            <li><a href="#zoom" id="markdown-toc-zoom">Zoom</a>        <ul>
-                                <li><a href="#data-api-1" id="markdown-toc-data-api-1">Data API</a></li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </li>
                       </ul>
                     </div>
                     <div className="col-md-7 p-l-0 p-r">
                       {this.props.children}                
                     </div>
                     <div className="col-md-3">
-                      <div className="alert alert-danger alert-dismissible hidden-xs" role="alert">
-                        <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <a className="alert-link" href="profile/index.html">Please login</a>. You can use your facebook account.
-                      </div>
+
+                      <BasicCard>
+                        <NextGiftCard />
+                      </BasicCard>
+
                       <Link to="/campaign/create" activeClassName="hide" className="btn btn-success-outline btn-lg btn-block m-b">
                         Create a New Campaign
                       </Link>
-                      <div className="alert alert-info hidden-xs" role="alert">
-                        <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+{/*
+                      <AlertCard type='danger' dismissable={true}>
+                        <a className="alert-link" href="profile/index.html">Please login</a>. You can use your facebook account.
+                      </AlertCard>
+
+                      <Link to="/campaign/create" activeClassName="hide" className="hide btn btn-success-outline btn-lg btn-block m-b">
+                        Create a New Campaign
+                      </Link>
+
+                      <AlertCard dismissable={true}>
                         <a className="alert-link" href="profile/index.html">Visit your profile!</a> Check your self, you aren't looking too good.
-                      </div>
-                      <div className="panel panel-default m-b-md hidden-xs">
-                        <div className="panel-body">
-                          <h5 className="m-t-0">Sponsored</h5>
-                          <p><strong>It might be time to visit Iceland.</strong> Iceland is so chill, and everything looks cool here. Also, we heard the people are pretty nice. What are you waiting for?</p>
-                          <button className="btn btn-primary-outline btn-sm">Buy a ticket</button>
-                        </div>
-                      </div>
-                      {<CampaignsCard campaigns={campaigns.slice(0, 3)} />}
+                      </AlertCard>
+
+                      <AlertCard type='success' dismissable={true}>
+                        <CampaignsCard campaigns={campaigns.slice(0, 3)} />
+                      </AlertCard>
+*/}
                     </div>
                   </div>
                 </div>

@@ -60,6 +60,8 @@ class CampaignCreate extends React.Component {
   }
 
   save(ev) {
+    
+    var {history} = this.props;
 
     console.log('save', this.props);
 
@@ -73,7 +75,7 @@ class CampaignCreate extends React.Component {
     }), {
       onSuccess: (res) => {
         console.log('success', res)
-        //history.pushState(null, `/user/${res.createUser.userEdge.node.id}/edit`)
+        history.pushState(null, `/campaigns`)
       },
       onFailure: (res) => console.log('fail', res)
     });
@@ -108,9 +110,9 @@ class CampaignCreate extends React.Component {
 
 function getFormControl({id, label, placeholder, value, disabled}, index, errors) {
   return (
-    <div key={index} className={classNames('form-group', {'has-error': errors[id] })}>
+    <div key={index} className={classNames('form-group', {'has-error': errors[id] }, {'hide': disabled })}>
       <label htmlFor="state">{label}</label>
-      <input type="text" className="form-control" id={id} name={id} ref={id} placeholder={placeholder || id} value={value} disabled={disabled}/>
+      <input type="text" className="form-control" id={id} name={id} ref={id} placeholder={placeholder || `enter ${id}`} value={value} disabled={disabled}/>
       {errors[id] && <span id="helpBlock" className="help-block text-danger">{errors[id]}</span>}
     </div>
   )
