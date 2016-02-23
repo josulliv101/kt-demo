@@ -20,7 +20,13 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {fetching: false};
+    this.state = {fetching: false, showProfileOptions: false};
+  }
+
+  toggleProfileOptions(ev) {
+    ev.preventDefault();
+    console.log('showProfileOptions');
+    this.setState({showProfileOptions: !this.state.showProfileOptions});
   }
 
   onChange() {
@@ -57,10 +63,10 @@ class App extends React.Component {
               <nav className="clearfix">
                 <div className="navbar-header">
                   <Link className="navbar-brand pos-r" to="/" style={{letterSpacing: '.06em', color: '#888', fontSize:'1.3em', top: 6 }}>
-                    { authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ "kindturtle" || breadcrumb}
+                    { false && authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ "kindturtle" || breadcrumb}
                   </Link>
                 </div>
-                <ul className="nav nav-pills pull-right pos-r" style={{top: 12, marginRight: 12}}>
+                <ul className="nav nav-pills navbar-right pos-r" style={{top: 12, marginRight: 12}}>
                   {/*<li>
                     <Link to="/" activeClassName="active">
                       Home
@@ -74,9 +80,20 @@ class App extends React.Component {
                   { 
                     authenticated && user && user.profile
 
-                    ? <li className="pos-r" style={{top: -2}}>
-                        <a href="/logout" className="p-l-0__ text-muted" style={{fontSize: '1.4em'}}><span className="icon icon-cog" /></a>
-                      </li>
+                    ? (
+                        <ul className="nav nav-pills" role="tablist"> 
+                          <li role="presentation" ref="profileDropdownOptions" className={`dropdown ${ this.state.showProfileOptions ? 'open' : '' }`}> 
+                            <a id="drop4" tabIndex="0" onClick={this.toggleProfileOptions.bind(this)} href="#" className="dropdown-toggle pos-r p-y-0" style={{top:4}} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> 
+                              <img className="img-circle" src={user.profile.picture} style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', border: '#d3e0e9 1px solid', width: 30 }} /> <span className={`icon ${ this.state.showProfileOptions ? 'icon-chevron-small-up' : 'icon-chevron-small-down' }`}></span> 
+                            </a> 
+                            <ul id="menu1" className="dropdown-menu" style={{marginTop: 7}} aria-labelledby="drop4">
+                              <li><a className="p-y-0" href="#">Settings</a></li> 
+                              <li role="separator" className="divider"></li> 
+                              <li><a className="p-y-0" href="/logout">Logout</a></li> 
+                            </ul>
+                          </li>
+                        </ul>
+                      )
 
                     : <a className="btn btn-xs btn-pill__ btn-info-outline pos-r m-l" style={{ padding: 'inherit 0', top: 9, right: 6}} href="/private">Login</a>
                   }
@@ -94,7 +111,7 @@ class App extends React.Component {
                 <div className="panel-body m-t" style={{minHeight: 550}}>
                   <div className="row">
                     {
-                      authenticated && user && user.profile && <img className="pos-a img-circle" src={user.profile.picture} style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', border: '#d3e0e9 1px solid', top: -36, left: 28, width: 32 }} />
+                      authenticated && user && user.profile && <img className="hide pos-a img-circle" src={user.profile.picture} style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', border: '#d3e0e9 1px solid', top: -36, left: 28, width: 32 }} />
                     }
                     { fetching && <div className="pos-a" style={{top: 0, top: 0, width: '100%', height: '100%', background: '#fff', zIndex: 999, opacity: '.7'}} />}
                     <div className="col-md-2">
@@ -103,6 +120,7 @@ class App extends React.Component {
                         <li><Link to="/" activeStyle={activeStyle} onlyActiveOnIndex={true}>Home</Link></li>
                         <li><Link to="/campaigns" activeStyle={activeStyle}>Campaigns <span className="badge pull-right">{campaigns.length}</span></Link></li>
                         <li><Link to="/about" activeStyle={activeStyle}>About</Link></li>
+                        <li><Link to="/news" activeStyle={activeStyle}>News</Link></li>
                       </ul>
                     </div>
                     <div className="col-md-7 p-l-0 p-r">
