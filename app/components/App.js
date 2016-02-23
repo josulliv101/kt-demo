@@ -5,6 +5,7 @@ import registry from '../utils/registry';
 import {BasicCard, AlertCard} from './cards/CardTypes';
 import CampaignsCard from './cards/CampaignsCard';
 import NextGiftCard from './cards/NextGiftCard';
+import ProfileDropdown from './ProfileDropdown';
 
 function getStoreState() {
 
@@ -21,12 +22,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {fetching: false, showProfileOptions: false};
-  }
-
-  toggleProfileOptions(ev) {
-    ev.preventDefault();
-    console.log('showProfileOptions');
-    this.setState({showProfileOptions: !this.state.showProfileOptions});
   }
 
   onChange() {
@@ -66,38 +61,7 @@ class App extends React.Component {
                     { false && authenticated ? <span style={{marginLeft: 36}}> / </span> : null }{ "kindturtle" || breadcrumb}
                   </Link>
                 </div>
-                <ul className="nav nav-pills navbar-right pos-r" style={{top: 12, marginRight: 12}}>
-                  {/*<li>
-                    <Link to="/" activeClassName="active">
-                      Home
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/about" activeClassName="active">
-                      About
-                    </Link>
-                  </li>*/}
-                  { 
-                    authenticated && user && user.profile
-
-                    ? (
-                        <ul className="nav nav-pills" role="tablist"> 
-                          <li role="presentation" ref="profileDropdownOptions" className={`dropdown ${ this.state.showProfileOptions ? 'open' : '' }`}> 
-                            <a id="drop4" tabIndex="0" onClick={this.toggleProfileOptions.bind(this)} href="#" className="dropdown-toggle pos-r p-y-0" style={{top:4}} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> 
-                              <img className="img-circle" src={user.profile.picture} style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', border: '#d3e0e9 1px solid', width: 30 }} /> <span className={`icon ${ this.state.showProfileOptions ? 'icon-chevron-small-up' : 'icon-chevron-small-down' }`}></span> 
-                            </a> 
-                            <ul id="menu1" className="dropdown-menu" style={{marginTop: 7}} aria-labelledby="drop4">
-                              <li><a className="p-y-0" href="#">Settings</a></li> 
-                              <li role="separator" className="divider"></li> 
-                              <li><a className="p-y-0" href="/logout">Logout</a></li> 
-                            </ul>
-                          </li>
-                        </ul>
-                      )
-
-                    : <a className="btn btn-xs btn-pill__ btn-info-outline pos-r m-l" style={{ padding: 'inherit 0', top: 9, right: 6}} href="/private">Login</a>
-                  }
-                </ul>
+                <ProfileDropdown user={user} />
               </nav>
               <div className="pos-a img-circle" style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', background: '#3097d1', border: '#d3e0e9 1px solid', top: 0, left: '50%', width: 42, height: 42, marginLeft: '-21px' }}>
                 <img className={`img-responsive pos-r animated ${fetching ? 'tada infinite' : ''}`} src="/img/kt.png" style={{width: 27, top: 8, left: 6 }} /> 

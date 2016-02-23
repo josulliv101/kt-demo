@@ -5,6 +5,7 @@ import Relay from 'react-relay';
 import App from './components/App';
 import pgHome from './components/pg/Home';
 import pgAbout from './components/pg/About';
+import pgSettings from './components/pg/Settings';
 import pgCampaigns from './components/pg/Campaigns';
 import pgCampaignCreate from './components/pg/CampaignCreate';
 
@@ -35,6 +36,14 @@ var appRoute = {
             path: 'about',
             breadcrumb: 'about',
             component: pgAbout,
+            //user_id: _user_id, // Make available in preloadedData on client
+            //prepareParams: (params, route) => ({...params, user_id: _user_id }),
+            queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
+        },
+        {
+            path: 'settings',
+            breadcrumb: 'settings',
+            component: pgSettings,
             //user_id: _user_id, // Make available in preloadedData on client
             //prepareParams: (params, route) => ({...params, user_id: _user_id }),
             queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
