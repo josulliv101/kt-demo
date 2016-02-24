@@ -200,6 +200,35 @@ exports.addCampaign = ({title, description, picture, city, state, owner_id}) => 
 
 };
 
+exports.updateProfile = ({fname, lname, user_id, profile_id}) => {
+
+  return new Promise((resolve, reject) => {
+    Profile.findOne({owner_id: user_id})
+           .then((profile) => {
+              console.log('updateUser', profile);
+              if (fname) profile.name.first = fname;
+              if (lname) profile.name.last = lname;
+              profile.save((err, res) => err ? reject(err) : resolve(res) );
+           })
+  });
+
+/*  let modify = {};
+
+  console.log('updateUser', user_id, fname, lname, profile_id);
+
+  fname ? modify.fname = fname : null;
+  lname ? modify.lname = lname : null;
+  profile_id ? modify.profile_id = profile_id : null;
+  
+  return new Promise((resolve, reject) => {
+    Profile.update({owner_id: user_id}, modify, (err, res) => {
+      //res.id = id;
+      console.log('response', getUserProfile(user_id));
+      err ? reject(err) : resolve(getUserProfile(user_id));
+    });
+  });*/
+};
+
 function getProfileByProfileId(profile_id) {
   //console.log('DB::getProfileByProfileId', profile_id);
   return new Promise((resolve, reject) => {

@@ -63,8 +63,8 @@ class App extends React.Component {
                 </div>
                 <ProfileDropdown user={user} />
               </nav>
-              <div className="pos-a img-circle" style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', background: '#3097d1', border: '#d3e0e9 1px solid', top: 0, left: '50%', width: 42, height: 42, marginLeft: '-21px' }}>
-                <img className={`img-responsive pos-r animated ${fetching ? 'tada infinite' : ''}`} src="/img/kt.png" style={{width: 27, top: 8, left: 6 }} /> 
+              <div className="pos-a img-circle" style={{boxShadow: '0 1px 1px rgba(0,0,0,.05)', background: '#3097d1', border: '#d3e0e9 1px solid', top: -4, left: '50%', width: 46, height: 46, marginLeft: '-23px' }}>
+                <img className={`img-responsive pos-r animated ${fetching ? 'tada infinite' : ''}`} src="/img/kt.png" style={{width: 27, top: 10, left: 8 }} /> 
               </div>        
             </div>
           </div>
@@ -83,8 +83,8 @@ class App extends React.Component {
                         <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
                         <li><Link to="/" activeStyle={activeStyle} onlyActiveOnIndex={true}>Home</Link></li>
                         <li><Link to="/campaigns" activeStyle={activeStyle}>Campaigns <span className="badge pull-right">{campaigns.length}</span></Link></li>
+                        <li><Link to="/faq" activeStyle={activeStyle}>FAQ</Link></li>
                         <li><Link to="/about" activeStyle={activeStyle}>About</Link></li>
-                        <li><Link to="/news" activeStyle={activeStyle}>News</Link></li>
                       </ul>
                     </div>
                     <div className="col-md-7 p-l-0 p-r">

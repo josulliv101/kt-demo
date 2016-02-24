@@ -6,6 +6,7 @@ import App from './components/App';
 import pgHome from './components/pg/Home';
 import pgAbout from './components/pg/About';
 import pgSettings from './components/pg/Settings';
+import pgFaq from './components/pg/Faq';
 import pgCampaigns from './components/pg/Campaigns';
 import pgCampaignCreate from './components/pg/CampaignCreate';
 
@@ -41,9 +42,18 @@ var appRoute = {
             queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
         },
         {
+            path: 'faq',
+            breadcrumb: 'faq',
+            component: pgFaq,
+            //user_id: _user_id, // Make available in preloadedData on client
+            //prepareParams: (params, route) => ({...params, user_id: _user_id }),
+            queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
+        },
+        {
             path: 'settings',
             breadcrumb: 'settings',
             component: pgSettings,
+            onEnter: requireAuth,
             //user_id: _user_id, // Make available in preloadedData on client
             //prepareParams: (params, route) => ({...params, user_id: _user_id }),
             queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}

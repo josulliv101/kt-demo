@@ -5,10 +5,10 @@ import Relay from 'react-relay';
 class Campaigns extends React.Component {
 
   render() {
-    var {campaigns} = this.props.viewer;
+    var {campaigns, title} = this.props;
     return (
       <div className="docs-content">
-        <h1 className="m-t-0">Campaigns ({campaigns.length})</h1>
+        <h1 className="m-t-0">{title} ({campaigns.length})</h1>
         <table className="table table-hover">
           <thead>
             <tr>
@@ -38,23 +38,4 @@ class Campaigns extends React.Component {
   }
 }
 
-export default Relay.createContainer(Campaigns, {
-  fragments: {
-    viewer: () => Relay.QL`
-      fragment on Viewer {
-        campaigns {
-          owner_id
-          owner {
-            name
-            profile {
-              fname
-              lname
-            }
-          }
-          title
-          location
-        }
-      }
-    `
-  }
-});
+export default Campaigns

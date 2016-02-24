@@ -61,6 +61,8 @@ type Profile implements Node {
   profile_id: String
   owner_id: String
   name: String
+  fname: String
+  lname: String
   picture: String
 }
 
@@ -75,6 +77,20 @@ type RootMutation {
   createNewUser(input: CreateNewUserInput!): CreateNewUserPayload
   createNewProfile(input: CreateNewProfileInput!): CreateNewProfilePayload
   createNewCampaign(input: CreateNewCampaignInput!): CreateNewCampaignPayload
+  updateProfile(input: UpdateProfileInput!): UpdateProfilePayload
+}
+
+input UpdateProfileInput {
+  fname: String
+  lname: String
+  profile_id: String
+  user_id: String
+  clientMutationId: String!
+}
+
+type UpdateProfilePayload {
+  profile: Profile
+  clientMutationId: String!
 }
 
 type User implements Node {

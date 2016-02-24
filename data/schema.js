@@ -56,6 +56,14 @@ var GraphQLProfile = new GraphQLObjectType({
       type: GraphQLString,
       resolve: profile => profile.name.full,
     },
+    fname: {
+      type: GraphQLString,
+      resolve: profile => profile.name.first,
+    },
+    lname: {
+      type: GraphQLString,
+      resolve: profile => profile.name.last,
+    },
     picture: {
       type: GraphQLString,
     }
@@ -261,6 +269,28 @@ var CreateNewCampaignMutation = mutationWithClientMutationId({
  
 });
 
+var UpdateProfileMutation = mutationWithClientMutationId({
+
+  name: 'UpdateProfile',
+
+  inputFields: {
+    fname: {type: GraphQLString },
+    lname: {type: GraphQLString },
+    profile_id: {type: GraphQLString },
+    user_id: {type: GraphQLString }
+  },
+ 
+  outputFields: {
+    profile: {
+      type: GraphQLProfile,
+      resolve: (profile) => profile
+    }
+  },
+   
+  mutateAndGetPayload: User.updateProfile
+ 
+});
+
 const RootMutation = new GraphQLObjectType({
 
   name: "RootMutation",
@@ -268,7 +298,8 @@ const RootMutation = new GraphQLObjectType({
   fields: () => ({
     createNewUser: CreateNewUserMutation,
     createNewProfile: CreateNewProfileMutation,
-    createNewCampaign: CreateNewCampaignMutation
+    createNewCampaign: CreateNewCampaignMutation,
+    updateProfile: UpdateProfileMutation
   })
 
 });
