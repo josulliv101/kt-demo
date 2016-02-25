@@ -5,6 +5,7 @@ import registry from '../utils/registry';
 import {BasicCard, AlertCard} from './cards/CardTypes';
 import CampaignsCard from './cards/CampaignsCard';
 import NextGiftCard from './cards/NextGiftCard';
+import BecomeMemberCard from './cards/BecomeMemberCard';
 import ProfileDropdown from './ProfileDropdown';
 
 function getStoreState() {
@@ -43,12 +44,12 @@ class App extends React.Component {
 
   render() {
     var {id, user, campaigns} = this.props.viewer;
-    var {authenticated, viewer} = this.props;
+    var {authenticated, viewer, user_id} = this.props;
     var {fetching} = this.state;
     var activeStyle = {borderLeft: '2px solid #3097d1' };
     var breadcrumb = this.props.routes.filter(route => !!route.breadcrumb).map(route => route.breadcrumb).join(' / ');
     
-    console.log('APP::render', this.props.authenticated);
+    console.log('APP::render', this.props);
 
     return (
       <div className="test-123 m-t">
@@ -82,7 +83,7 @@ class App extends React.Component {
                       <ul id="markdown-toc" className="m-t-0">
                         <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
                         <li><Link to="/" activeStyle={activeStyle} onlyActiveOnIndex={true}>Home</Link></li>
-                        <li><Link to="/campaigns" activeStyle={activeStyle}>Campaigns <span className="badge pull-right">{campaigns.length}</span></Link></li>
+                        <li className="hide"><Link to="/campaigns" activeStyle={activeStyle}>Campaigns <span className="badge pull-right">{campaigns.length}</span></Link></li>
                         <li><Link to="/faq" activeStyle={activeStyle}>FAQ</Link></li>
                         <li><Link to="/about" activeStyle={activeStyle}>About</Link></li>
                       </ul>
@@ -91,6 +92,11 @@ class App extends React.Component {
                       {this.props.children}                
                     </div>
                     <div className="col-md-3">
+                      
+                      
+                      <BasicCard>
+                        <BecomeMemberCard userId={user_id}/>
+                      </BasicCard>
 
                       <BasicCard>
                         <NextGiftCard />

@@ -20,6 +20,26 @@ let UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
     index: true
+  },
+  subscription: {
+    plan: {
+      type: String
+    }
+  },
+  stripe: {
+    customer_id: {
+      type: String,
+      index: true
+    },
+    email: {
+      type: String,
+      index: true
+    },
+    creditcard: {
+      last4: {
+        type: String
+      }
+    }
   }
 });
 

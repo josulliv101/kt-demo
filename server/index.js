@@ -7,7 +7,7 @@ import auth from './authentication';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import renderOnServer from '../app/renderOnServer';
-
+import subscribeOnServer from '../app/subscribeOnServer';
 
 var {PORT, NODE_ENV, PWD, MONGOLAB_URI} = process.env;
 
@@ -26,12 +26,17 @@ router.use('/graphql', graphQL);
 // Throws error if no valid jwt
 router.use('/private', auth.middleware.private);
 router.use('/campaign/create', auth.middleware.private);
-
+router.use('/api/subscribe', auth.middleware.private);
 
 // Adds user to req if valid jwt
-router.use('/*', auth.middleware.public.unless({path:['/private','/campaign/create']}));
+router.use('/*', auth.middleware.public.unless({path:['/private', '/api/subscribe', '/campaign/create']}));
 
 router.use(auth.handleNotAuthenticatedError); // user not authenticated, send to login page
+
+
+router.post('/api/subscribe', (req, res, next) => {
+	subscribeOnServer(req, res, next);
+}); 
 
 //router.get("/", (req, res) => res.json({ hello: 'world' }));
 router.get("/private", (req, res) => res.json({ hello: 'sssshhhhhhh' }));
