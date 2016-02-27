@@ -6,7 +6,7 @@ class BecomeMemberCard extends React.Component {
   
   handleSubscribe() {
 		
-		const {userId} = this.props;
+		const {userId, forceFetch} = this.props;
 
 		console.log('subscribe', userId, this.props);
 
@@ -30,7 +30,10 @@ class BecomeMemberCard extends React.Component {
 				     if (err || !res.ok) {
 				       alert('Oh no! error');
 				     } else {
-				       alert('yay got ' + JSON.stringify(res.body));
+				       console.log('yay got ', JSON.stringify(res.body));
+
+				       // So the 'isCustomer' flag gets updated. 
+				       forceFetch();
 				     }
 				   });
 	    }

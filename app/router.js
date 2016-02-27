@@ -19,7 +19,7 @@ var _isFetching = false;
 var appRoute = {
     path: '/',
     component: App,
-    breadcrumb: 'kindturtle',
+    breadcrumb: 'home',
     isFetching: _isFetching,
 /*    renderFetched: (obj, attrs, arg) => {
         //debugger;

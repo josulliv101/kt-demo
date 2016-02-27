@@ -29,7 +29,8 @@ var {nodeInterface, nodeField} = nodeDefinitions(
     if (type === 'User') {
       return User.getUserByUserId(id);
     } else if (type === 'Viewer') {
-      return User.getUserByUserId(id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
+      // node's will be passing real ids, so can't use friendlier ids like 'user_id'
+      return User.getUserById(id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
     } else if (type === 'Profile') {
       return User.getProfileById(id);
     } else if (type === 'Campaign') {
@@ -85,6 +86,10 @@ var GraphQLUser = new GraphQLObjectType({
     },
     user_id: {
       type: GraphQLString,
+    },
+    isCustomer: {
+      type: GraphQLBoolean,
+      resolve: user => user.isCustomer,
     },
     name: {
       type: GraphQLString,

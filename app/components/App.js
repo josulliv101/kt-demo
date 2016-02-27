@@ -48,7 +48,7 @@ class App extends React.Component {
     var {fetching} = this.state;
     var activeStyle = {borderLeft: '2px solid #3097d1' };
     var breadcrumb = this.props.routes.filter(route => !!route.breadcrumb).map(route => route.breadcrumb).join(' / ');
-    
+    var breadcrumbRoutes = this.props.routes.filter(route => !!route.breadcrumb);
     console.log('APP::render', this.props);
 
     return (
@@ -89,14 +89,28 @@ class App extends React.Component {
                       </ul>
                     </div>
                     <div className="col-md-7 p-l-0 p-r">
+                      {
+                        breadcrumbRoutes.length > 1 && // No breadcrumb on homepage
+                        <ol className="breadcrumb p-l-0 p-b-0" style={{backgroundColor: 'transparent'}}>
+                          {
+                            breadcrumbRoutes.map((route, i, routes) => {
+                              return i < routes.length-1
+                                ? <li key={i}><Link to={route.path}>{route.breadcrumb}</Link></li>
+                                : <li key={i} className='active'>{route.breadcrumb}</li>
+                            })
+                          }
+                        </ol>
+                      }
                       {this.props.children}                
                     </div>
                     <div className="col-md-3">
                       
-                      
-                      <BasicCard>
-                        <BecomeMemberCard userId={user_id}/>
-                      </BasicCard>
+                      {
+                        user && !user.isCustomer &&
+                        <BasicCard>
+                          <BecomeMemberCard userId={user_id} forceFetch={this.props.relay.forceFetch} />
+                        </BasicCard>
+                      }
 
                       <BasicCard>
                         <NextGiftCard />
@@ -166,6 +180,7 @@ export default Relay.createContainer(App, {
         }
         user {
           user_id
+          isCustomer
           profile {
             name
             picture

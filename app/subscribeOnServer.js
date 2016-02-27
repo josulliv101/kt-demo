@@ -1,5 +1,6 @@
 import path from 'path';
 import auth from '../server/authentication';
+import User from '../data/models/User';
 
 const {STRIPE_SECRET_KEY} = process.env;
 
@@ -14,8 +15,8 @@ export default (req, res, next) => {
       plan: 'slim',
       source: req.body.id // obtained with Stripe.js
     }, function(err, customer) {
-      console.log('customer', customer.id)
-      res.json({ subscribed: plan });
+      console.log('customer', customer.id, User);
+      User.addCustomer({ user_id: req.body.kt_user_id, customer_id: customer.id }).then(() => res.json({ subscribed: !!customer.id }) )
     });
 
 };

@@ -97,6 +97,7 @@ type User implements Node {
   id: ID!
   uid: String
   user_id: String
+  isCustomer: Boolean
   name: String
   profile: Profile
 }
