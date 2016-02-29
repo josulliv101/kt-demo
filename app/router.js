@@ -21,11 +21,6 @@ var appRoute = {
     component: App,
     breadcrumb: 'home',
     isFetching: _isFetching,
-/*    renderFetched: (obj, attrs, arg) => {
-        //debugger;
-        return //<div>{JSON.stringify(attrs)}</div>;
-    },*/
-
     user_id: _user_id, // Make available in preloadedData on client
     prepareParams: (params, route) => ({...params, user_id: _user_id, isFetching: _isFetching }),
     queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`},

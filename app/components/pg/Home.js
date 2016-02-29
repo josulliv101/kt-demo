@@ -12,7 +12,7 @@ class Home extends React.Component {
         <h1 className="m-t-0 hide">Welcome to Kindturtle</h1>
         <AlertCard type="info">
           <p>
-            <strong>kindturtle</strong> is home to an underground society of charitable people. We crowdsource kindness &mdash; finding in-need/deserving individuals and awarding them a kindturtle grant.
+            <strong>kindturtle</strong> is home to an underground society of charitable people. We crowdsource kindness &mdash; awarding grants to in-need/deserving people.
             <br/>
             <Link to="/faq"><small>Check out FAQ <span className="icon icon-chevron-small-right"/></small></Link>
           </p>

@@ -7,6 +7,8 @@ import CampaignsCard from './cards/CampaignsCard';
 import NextGiftCard from './cards/NextGiftCard';
 import BecomeMemberCard from './cards/BecomeMemberCard';
 import ProfileDropdown from './ProfileDropdown';
+import { Notification, NotificationStack } from 'react-notification';
+import { OrderedSet } from 'immutable';
 
 function getStoreState() {
 
@@ -22,7 +24,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {fetching: false, showProfileOptions: false};
+    this.state = {fetching: false, showProfileOptions: false, showNotification: false, count: 0, notifications: OrderedSet()};
   }
 
   onChange() {
@@ -42,10 +44,79 @@ class App extends React.Component {
     store.removeChangeListener(this.onChange.bind(this));
   }
 
+  addNotification() {
+    const { notifications, count } = this.state;
+    const id = notifications.size + 1;
+    const newCount = count + 1;
+
+    return this.setState({
+      count: newCount,
+      notifications: notifications.add({
+        message: `Please login to join the party. Use your facebook account.`,
+        key: newCount,
+        dismissAfter: 5000,
+        style: this.getNotificationStyles()
+      })
+    });
+  }
+
+  getNotificationStyles() {
+    let bar = {
+        position: 'fixed',
+        top: '1rem',
+        left: 'none',
+        right: '-100%',
+        width: 'auto',
+        maxHeight: 54,
+        padding: '2rem',
+        margin: 0,
+        zIndex: 999999,
+        color: '#fafafa',
+        font: '1.6rem normal Roboto, sans-serif',
+        borderRadius: '2px',
+        background: '#3097d1',
+        borderSizing: 'border-box',
+        boxShadow: '0 0 1px 1px rgba(10, 10, 11, .125)',
+        cursor: 'default',
+        WebKittransition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        MozTransition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        msTransition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        OTransition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        transition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+
+        // Trigger GPU acceleration
+        WebkitTransform: 'translatez(0)',
+        MozTransform: 'translatez(0)',
+        msTransform: 'translatez(0)',
+        OTransform: 'translatez(0)',
+        transform: 'translatez(0)'
+    };
+
+    let active = {
+      top: '1rem',
+      left: 'none',
+      right: '1rem'
+    };
+
+    let action = {
+      padding: '0.125rem',
+      marginLeft: '1rem',
+      color: '#f44336',
+      font: '.75rem normal Roboto, sans-serif',
+      lineHeight: '1rem',
+      letterSpacing: '.125ex',
+      textTransform: 'uppercase',
+      borderRadius: '2px',
+      cursor: 'pointer'
+    };
+
+    return { bar, active, action };
+  }
+
   render() {
     var {id, user, campaigns} = this.props.viewer;
     var {authenticated, viewer, user_id} = this.props;
-    var {fetching} = this.state;
+    var {fetching, showNotification} = this.state;
     var activeStyle = {borderLeft: '2px solid #3097d1' };
     var breadcrumb = this.props.routes.filter(route => !!route.breadcrumb).map(route => route.breadcrumb).join(' / ');
     var breadcrumbRoutes = this.props.routes.filter(route => !!route.breadcrumb);
@@ -53,6 +124,12 @@ class App extends React.Component {
 
     return (
       <div className="test-123 m-t">
+        <NotificationStack
+          notifications={this.state.notifications.toArray()}
+          onDismiss={notification => this.setState({
+            notifications: this.state.notifications.delete(notification)
+          })}
+        />
         <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -108,7 +185,7 @@ class App extends React.Component {
                       {
                         user && !user.isCustomer &&
                         <BasicCard>
-                          <BecomeMemberCard userId={user_id} forceFetch={this.props.relay.forceFetch} />
+                          <BecomeMemberCard userId={user_id} forceFetch={this.props.relay.forceFetch} growl={::this.addNotification} />
                         </BasicCard>
                       }
 
@@ -119,6 +196,8 @@ class App extends React.Component {
                       <Link to="/campaign/create" activeClassName="hide" className="btn btn-success-outline btn-lg btn-block m-b">
                         Create a New Campaign
                       </Link>
+
+                      <button className="btn btn-lg btn-primary" onClick={::this.addNotification}>Snackbar</button>
 {/*
                       <AlertCard type='danger' dismissable={true}>
                         <a className="alert-link" href="profile/index.html">Please login</a>. You can use your facebook account.
@@ -142,7 +221,6 @@ class App extends React.Component {
               </div>
             </div>
           </div>
-
           <div className="row">
             <div className="col-md-12">
               <nav className="pos-r" style={{top: 6, padding: '0 15px' }}>

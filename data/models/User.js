@@ -21,19 +21,16 @@ let UserSchema = new mongoose.Schema({
     unique: true,
     index: true
   },
-  subscription: {
-    plan: {
-      type: String
-    }
-  },
   stripe: {
     customer_id: {
       type: String,
       index: true
     },
-    email: {
-      type: String,
-      index: true
+    plan: {
+      type: String
+    },
+    last4: {
+      type: String
     },
     creditcard: {
       last4: {
@@ -128,6 +125,10 @@ UserSchema.virtual('uid').get(function() {
 
 UserSchema.virtual('isCustomer').get(function() {
   return this.stripe.customer_id;
+});
+
+UserSchema.virtual('hasSubscription').get(function() {
+  return !!this.stripe.customer_id && !!this.stripe.plan;
 });
 
 ProfileSchema.virtual('type').get(function() {
@@ -237,13 +238,17 @@ exports.updateProfile = ({fname, lname, user_id, profile_id}) => {
   });
 }
 
-exports.addCustomer = ({user_id, customer_id}) => {
+exports.addCustomer = ({user_id, customer_id, email, plan, last4, currency}) => {
 
   return new Promise((resolve, reject) => {
     User.findOne({user_id: user_id})
            .then((user) => {
               console.log('addCustomer', user);
               user.stripe.customer_id = customer_id;
+              user.stripe.last4 = last4;
+              user.stripe.currency = currency;
+              user.stripe.plan = plan;
+              user.email = email;
               user.save((err, res) => err ? reject(err) : resolve(res) );
            })
   });
