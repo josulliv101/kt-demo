@@ -24,7 +24,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {fetching: false, showProfileOptions: false, showNotification: false, count: 0, notifications: OrderedSet()};
+    this.state = {fetching: false, showProfileOptions: false, showNotification: false, notifications: OrderedSet()};
   }
 
   onChange() {
@@ -44,19 +44,11 @@ class App extends React.Component {
     store.removeChangeListener(this.onChange.bind(this));
   }
 
-  addNotification() {
-    const { notifications, count } = this.state;
-    const id = notifications.size + 1;
-    const newCount = count + 1;
+  addNotification({ message = '', key = new Date(), dismissAfter = 5000, style = this.getNotificationStyles() }) {
+    const { notifications } = this.state;
 
     return this.setState({
-      count: newCount,
-      notifications: notifications.add({
-        message: `Please login to join the party. Use your facebook account.`,
-        key: newCount,
-        dismissAfter: 5000,
-        style: this.getNotificationStyles()
-      })
+      notifications: notifications.add({message, key, dismissAfter, style})
     });
   }
 
@@ -78,11 +70,11 @@ class App extends React.Component {
         borderSizing: 'border-box',
         boxShadow: '0 0 1px 1px rgba(10, 10, 11, .125)',
         cursor: 'default',
-        WebKittransition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
-        MozTransition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
-        msTransition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
-        OTransition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
-        transition: '.5s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        WebKittransition: '.9s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        MozTransition: '.9s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        msTransition: '.9s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        OTransition: '.9s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
+        transition: '.9s cubic-bezier(0.89, 0.01, 0.5, 1.1)',
 
         // Trigger GPU acceleration
         WebkitTransform: 'translatez(0)',
@@ -185,7 +177,7 @@ class App extends React.Component {
                       {
                         user && !user.isCustomer &&
                         <BasicCard>
-                          <BecomeMemberCard userId={user_id} forceFetch={this.props.relay.forceFetch} growl={::this.addNotification} />
+                          <BecomeMemberCard userId={user_id} forceFetch={this.props.relay.forceFetch} growl={this.addNotification.bind(this, {message: 'Must login to subscribe.'})} />
                         </BasicCard>
                       }
 
