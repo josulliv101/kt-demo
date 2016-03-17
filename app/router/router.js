@@ -2,14 +2,18 @@ import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 import {} from 'isomorphic-relay'; // Load before "react-relay" to prevent "self is not defined"
 import Relay from 'react-relay';
-import App from './components/App';
+import App from './components/App2';
 import pgHome from './components/pg/Home';
 import pgAbout from './components/pg/About';
-import pgSettings from './components/pg/Settings';
+import pgSettings from './components/pg/SettingsPage';
+import SettingsIndex from './components/pg/settings/SettingsIndex';
+import SettingsSubscription from './components/pg/settings/SettingsSubscription';
 import pgFaq from './components/pg/Faq';
 import pgJoin from './components/pg/Join';
 import pgCampaigns from './components/pg/Campaigns';
 import pgCampaignCreate from './components/pg/CampaignCreate';
+
+import layoutColumns3 from './components/layout/Columns3';
 
 import ViewerQueries from './queries/ViewerQueries';
 
@@ -60,7 +64,19 @@ var appRoute = {
             onEnter: requireAuth,
             //user_id: _user_id, // Make available in preloadedData on client
             //prepareParams: (params, route) => ({...params, user_id: _user_id }),
-            queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
+            queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`},
+            indexRoute: {
+                component: SettingsIndex,
+                queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
+            },
+            childRoutes: [
+                {
+                    path: 'subscription',
+                    breadcrumb: 'settings',
+                    component: SettingsSubscription,
+                    queries: {viewer: () => Relay.QL`query { viewer(user_id: $user_id) }`}
+                }
+            ]
         },
         {
             path: 'campaigns',

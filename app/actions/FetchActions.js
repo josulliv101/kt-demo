@@ -1,21 +1,14 @@
-import {FETCH} from './const';
-import registry from '../utils/registry';
-var dispatcher = registry.get('Dispatcher');
+import {FETCH2} from './const';
+import {Dispatcher} from '../utils/registry';
+import singleton from '../decorators/singleton';
 
-/*
- * @class Fetch Actions
- */
+@singleton
 class FetchActions {
-  
-  start(update = {fetching: true}) { 
-	console.log('Fetch Actions', FETCH.START);
-	dispatcher().dispatch({ actionType: FETCH.START, update });
-  }
 
-  stop(update = {fetching: false}) { 
-	console.log('Fetch Actions', FETCH.STOP);
-	dispatcher().dispatch({ actionType: FETCH.STOP, update });
+  status(fetching = false) {
+  	const update = { fetching };
+	Dispatcher().dispatch({ actionType: FETCH2.STATUS, update: fetching });
   }
 }
 
-export default FetchActions;
+export default FetchActions.getInstance

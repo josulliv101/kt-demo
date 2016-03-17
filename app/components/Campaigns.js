@@ -1,6 +1,5 @@
 import React from 'react';
 import Relay from 'react-relay';
-//import {Link} from 'react-router';
 
 class Campaigns extends React.Component {
 

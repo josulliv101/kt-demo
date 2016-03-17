@@ -123,7 +123,7 @@ var GraphQLCampaign = new GraphQLObjectType({
     owner: {
       type: GraphQLUser,
       resolve: campaign => {
-        console.log('owner!', campaign.owner_id);
+        //console.log('owner!', campaign.owner_id);
         return User.getUserByUserId(campaign.owner_id)
       }
     },

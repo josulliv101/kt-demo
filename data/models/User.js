@@ -161,7 +161,7 @@ exports.UserSchema = User;
 exports.ProfileSchema = Profile;
 exports.CampaignSchema = Campaign;
 
-let userAnonymous = new User({ user_id: -1, name: { first: 'Anonymous', last: 'User' }});
+let userAnonymous = new User({ user_id: null, name: { first: 'Anonymous', last: 'User' }});
 userAnonymous.anonymous = true;
 
 
@@ -311,7 +311,7 @@ function getUserProfile(user_id) {
 }
 
 function getUserByUserId(user_id) {
-  console.log('DB::getUserByUserId', user_id);
+  //console.log('DB::getUserByUserId', user_id);
   return new Promise((resolve, reject) => {
 
     if (!user_id) return resolve(userAnonymous);

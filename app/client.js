@@ -1,6 +1,16 @@
 import App from './App';
+import {routes} from './router/';
+import DOM from './utils/DomUtils';
+import {FetchActions as Fetch} from './actions';
 
-const state = JSON.parse(document.getElementById('preloadedData').textContent);
+const data = DOM.getData('preloadedData');
 
-var app = new App();
-app.renderToDOM(document.getElementById('app'), state);
+new App(data).renderToDOM({
+
+	routes,
+	el: document.getElementById('app'),
+
+	// Optional handler for Relay's onReadyStateChange
+	onReadyStateChange: (status) => Fetch().status(!status.ready) 
+
+});

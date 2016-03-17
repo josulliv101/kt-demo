@@ -1,38 +1,22 @@
-import BaseApp from './BaseApp';
-import registry from './utils/registry';
-import {FetchActions} from './actions';
+import {Dispatcher} from 'flux';
+import Store from './stores/Store';
+import {REGISTRY as REG} from './actions/const';
+import renderer from './decorators/renderer';
+import reg from './utils/registry';
 
-/*
- * @class App
- *
- * The Kindturle app only references actions specific to this application.
- *
- */
+// Prominent instances go in registry. All actions are singletons (not in registry). 
+// Actions grab any needed instances (biggies include Store, Dispatcher) from registry.
 
-class App extends BaseApp {
+// The renderer decorator adds methods for rendering routes to both the DOM & to a <String>
 
-  /*
-   * @constructs App
-   * @param {Object} options
-   */
-  constructor() { 
-    
-    super({
-      onReadyStateChange: (obj) => {
-        var actionsFetch = registry.get('FetchActions')();
-        console.log('onReadyStateChange', obj.ready);
-        !obj.ready ?  actionsFetch.start() : actionsFetch.stop();
-      }
-    }); // { el, state }
+@renderer
+export default class App {
 
-    //console.log('APP', el, state);
+  constructor(defaultState = {}, dispatcher = new Dispatcher()) { 
 
-    registry.set("FetchActions", new FetchActions());
-    //registry.set("API", new API());
-    //registry.set("Routes", Routes); // Module exports a function
+    // Initialize a store for client-side state. Relay store handles all state that persists to db.
+    reg.set(REG.STORE, new Store(dispatcher, defaultState));
+    reg.set(REG.DISPATCHER, dispatcher);
 
   }
-
 }
-
-export default App;

@@ -1,5 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
+import {Link} from 'react-router';
 import classNames from 'classnames';
 import Validate from 'validate.js';
 import UpdateProfileMutation from '../../mutations/UpdateProfileMutation';
@@ -71,14 +72,33 @@ class Settings extends React.Component {
       {id: 'fname', label: 'First Name', value: fname, disabled: false},
       {id: 'lname', label: 'Last Name', value: lname, disabled: false}
     ];
+    
+    var activeStyle = {borderLeft: '2px solid #3097d1' };
 
     return (
-      <div className="docs-content">
-        <h1 className="m-t-0">Settings</h1>
-        <form ref="formUpdateProfile"className="form" noValidate>
-          { fields.map((field, index) => getFormControl(field, index, errors)) }
-          <button type="submit" className="btn btn-default" onClick={this.handleSubmit.bind(this)}>Submit</button>
-        </form>
+      <div className="row">
+        <div className="col-md-2">
+          <ul id="markdown-toc" className="m-t-0">
+            <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
+            <li><Link to="/settings" activeStyle={activeStyle} onlyActiveOnIndex={true}>My Info</Link></li>
+            <li><Link to="/settings/subscription" activeStyle={activeStyle}>Subscription</Link></li>
+          </ul>
+        </div>
+        <div className="col-md-7">
+          {this.props.children}
+          <div className="docs-content">
+            <h1 className="m-t-0">Settings</h1>
+            <form ref="formUpdateProfile"className="form" noValidate>
+              { fields.map((field, index) => getFormControl(field, index, errors)) }
+              <button type="submit" className="btn btn-default" onClick={this.handleSubmit.bind(this)}>Submit</button>
+            </form>
+          </div>
+        </div>
+        <div className="col-md-3">
+          <Link to="/campaign/create" activeClassName="hide" className="btn btn-success-outline btn-lg btn-block m-b">
+            Create a New Campaign
+          </Link>
+        </div>
       </div>
     )
   }

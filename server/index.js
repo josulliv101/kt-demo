@@ -6,8 +6,8 @@ import compress from 'compression';
 import auth from './authentication';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import renderOnServer from '../app/renderOnServer';
-import subscribeOnServer from '../app/subscribeOnServer';
+import renderOnServer from './renderOnServer';
+import subscribeOnServer from './subscribeOnServer';
 
 var {PORT, NODE_ENV, PWD, MONGOLAB_URI} = process.env;
 

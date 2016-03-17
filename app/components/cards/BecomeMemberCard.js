@@ -1,17 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router';
 import request from 'superagent';
+import NotifyActions from '../../actions/NotifyActions';
+import style from '../../style/notification';
 
 class BecomeMemberCard extends React.Component {
   
   handleSubscribe() {
 		
-		const {userId, forceFetch, growl} = this.props;
-
-		console.log('subscribe', userId, this.props);
+		const {user, forceFetch} = this.props;
 		
 		// TODO Make pretty
-		if (!userId || userId === '-1') return growl();
+		if (!user || user.user_id === '-1') return NotifyActions().show({ message: 'Please login to subscribe.', style });
 
 		var handler = StripeCheckout.configure({
 		  key: "pk_test_QNcoIF4kr7w3xPprqgjYNzGv",
@@ -24,7 +24,7 @@ class BecomeMemberCard extends React.Component {
 		  token: function(token) {
 	      // Use the token to create the charge with a server-side script.
 	      // You can access the token ID with `token.id`
-	      token.kt_user_id = userId;
+	      token.kt_user_id = user.user_id;
 	      console.log('and here is the token', token.id);
 				 request
 				   .post('/api/subscribe')
@@ -49,16 +49,16 @@ class BecomeMemberCard extends React.Component {
   render() {
     return (
       <div>
-        <h5 className="m-t-0">So you want to join the party?</h5>
-        <p className="m-b">
-        	All of your monthly contribution goes towards a grant. Check out the different plans below.
-        </p>
-        <button className="btn btn-primary-outline btn-lg btn-block pos-r" style={{textAlign: 'left'}} onClick={this.handleSubscribe.bind(this)}>
-		    	Slim Plan 
-		    	<small className="pos-a" style={{top: 14, right: '1pc'}} >$3/month</small>
-        </button>
-        <Link to="/join" className="btn btn-primary-outline btn-lg btn-block pos-r" style={{textAlign: 'left'}}>Toned Plan <small className="pos-a" style={{top: 14, right: '1pc'}}>$9/month</small></Link>
-        <Link to="/join" className="btn btn-primary-outline btn-lg btn-block pos-r" style={{textAlign: 'left'}}>Muscle Plan <small className="pos-a" style={{top: 14, right: '1pc'}}>$18/month</small></Link>
+	        <h5 className="m-t-0">So you want to join the party?</h5>
+	        <p className="m-b">
+	        	All of your monthly contribution goes towards a grant. Check out the different plans below.
+	        </p>
+	        <button className="btn btn-primary-outline btn-lg btn-block pos-r" style={{textAlign: 'left'}} onClick={this.handleSubscribe.bind(this)}>
+			    	Slim Plan 
+			    	<small className="pos-a" style={{top: 14, right: '1pc'}} >$3/month</small>
+	        </button>
+	        <Link to="/join" className="btn btn-primary-outline btn-lg btn-block pos-r" style={{textAlign: 'left'}}>Toned Plan <small className="pos-a" style={{top: 14, right: '1pc'}}>$9/month</small></Link>
+	        <Link to="/join" className="btn btn-primary-outline btn-lg btn-block pos-r" style={{textAlign: 'left'}}>Muscle Plan <small className="pos-a" style={{top: 14, right: '1pc'}}>$18/month</small></Link>
       </div>
     )
   }
