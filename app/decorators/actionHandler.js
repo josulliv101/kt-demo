@@ -1,4 +1,4 @@
-import {FETCH, NOTIFY} from '../actions/const';
+import {FETCH, NOTIFY, CHANGE} from '../actions/const';
 
 export default ($$store) => {
 
@@ -16,6 +16,8 @@ export default ($$store) => {
 			if (!storeModifiers[actionType.type]) throw new Error("Not a valid store modifier");
 
 			storeModifiers[actionType.type](update);
+
+			this.emit(CHANGE, {});
 		}
 	}
 }

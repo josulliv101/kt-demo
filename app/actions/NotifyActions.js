@@ -16,7 +16,7 @@ class NotifyActions {
 
 	Dispatcher().dispatch({ 
 		actionType: NOTIFY2.SHOW, 
-		payload: {message, key, dismissAfter, style} 
+		update: {message, key, dismissAfter, style} 
 	});
   }
 

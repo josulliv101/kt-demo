@@ -8,10 +8,10 @@ class BecomeMemberCard extends React.Component {
   
   handleSubscribe() {
 		
-		const {user, forceFetch} = this.props;
+		const {auth, user, forceFetch} = this.props;
 		
 		// TODO Make pretty
-		if (!user || user.user_id === '-1') return NotifyActions().show({ message: 'Please login to subscribe.', style });
+		if (!auth) return NotifyActions().show({ message: 'Please login to subscribe.', style });
 
 		var handler = StripeCheckout.configure({
 		  key: "pk_test_QNcoIF4kr7w3xPprqgjYNzGv",

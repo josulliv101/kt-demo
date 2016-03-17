@@ -19,6 +19,7 @@ export default (Store, ...ids) => { // id1, id2, id3
 		  constructor(props = {}) {
 		    super(props);
 		    this.state = getStoreState(ids);
+		    this.onChange = ::this.onChange;
 		  }
 			
 		  onChange() {
