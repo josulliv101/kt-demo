@@ -18,7 +18,7 @@ export default [{
     indexRoute: {
         component: Home,
         queries: ViewerQueries,
-        prepareParams: (params, route) => ({...params, user_id: "facebook|211883462492448" }),
+        prepareParams: (params, route) => ({...params, user_id: "facebook|10153391429721274" }),
     },
     childRoutes: [
         {
