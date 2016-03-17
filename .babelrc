@@ -5,6 +5,11 @@
       "plugins": ["babel-relay-plugin-loader", "transform-class-properties", "transform-decorators-legacy"],
       "ignore": ['**/lib/**', '**/node_modules/**'],
       compact: false
+    },
+    "production": {
+      "plugins": ["transform-class-properties", "babel-relay-plugin-loader", "transform-decorators-legacy"],
+      "ignore": ['**/lib/**', '**/node_modules/**'],
+      compact: false 
     }
   }
 }
