@@ -1,14 +1,10 @@
 import React from 'react';
 import Relay from 'react-relay';
 import {Link} from 'react-router';
-import storeListener from '../../decorators/components/storeListener';
 import {BasicCard, AlertCard} from '../cards/CardTypes';
 import Campaigns from '../Campaigns';
 import BecomeMemberCard from '../cards/BecomeMemberCard';
-import Columns3 from '../layout/Columns3';
-import {Store} from '../../utils/registry';
 
-//@storeListener(Store, 'auth') 
 class Home extends React.Component {
 
   render() {

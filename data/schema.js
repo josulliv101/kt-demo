@@ -164,7 +164,7 @@ var RootQuery = new GraphQLObjectType({
   fields: {
     viewer: {
       type: GraphQLViewer,
-      resolve: (root, {user_id}) => User.getUserByUserId(user_id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
+      resolve: (root, {user_id}) => User.getUserByUserId('-1').then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
     },
     profile: {
       type: GraphQLProfile,
