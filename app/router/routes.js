@@ -16,7 +16,8 @@ export default ({user_id} = {}) => {
     component: AppContainer,
     indexRoute: {
         component: Home,
-        queries: ViewerQueries,
+        queries: {viewer: () => Relay.QL`query { viewer }`},
+        prepareParams: (params, route) => ({...params}),
     },
     childRoutes: [
       {
