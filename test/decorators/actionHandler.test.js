@@ -88,11 +88,7 @@ describe("Action Handler Decorator", function() {
 			
 		  	expect(() => store.handleAction({ actionType: copySTATUS, update: { foo: 'bar' }})).to.throw();
 		});
-
-
-
 	});
-
 });
 
 @actionHandler($$mockStore)
@@ -106,4 +102,6 @@ class MockStore {
 	get structure() {
 		return this[$$mockStore];
 	}
+
+	emit() {}
 }

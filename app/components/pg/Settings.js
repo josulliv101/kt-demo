@@ -42,7 +42,7 @@ class Settings extends React.Component {
   save(ev) {
 
     console.log('save', this.props);
-
+/*
     Relay.Store.commitUpdate(new UpdateProfileMutation({
       user_id: this.refs.owner_id.value,
       fname: this.refs.fname.value,
@@ -57,12 +57,12 @@ class Settings extends React.Component {
       },
       onFailure: (res) => console.log('fail', res)
     });
-
+*/
   }
 
   render() {
 
-    const {profile_id, fname, lname, owner_id} = this.props.viewer.user.profile;
+    const {profile_id, fname, lname, owner_id} = this.props;
     //const [fname, lname] = name.split(' ');
     let errors = this.state && this.state.errors || {};
 
@@ -115,21 +115,12 @@ function getFormControl({id, label, placeholder, value, disabled}, index, errors
 }
 
 
-export default Relay.createContainer(Settings, {
+export default Settings /*Relay.createContainer(Settings, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        user {
-          profile {
-            id
-            profile_id
-            fname
-            lname
-            owner_id
-          }
-        }
         ${UpdateProfileMutation.getFragment('viewer')}
       }
     `
   }
-});
+});*/

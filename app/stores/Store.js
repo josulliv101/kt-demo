@@ -36,6 +36,15 @@ class Store extends EventEmitter {
   removeChangeListener(callback) {
     this.removeListener(CHANGE, callback);
   }  
+  
+
+  //// Utils ////
+  
+  // Get state at a specific cursor path
+  stateAt(path = []) {
+    const val = this.structure.getIn(path);
+    return typeof val !== 'object' ? val : val.toJS();
+  }
 
 
   //// Getters/Setters ////
@@ -48,12 +57,6 @@ class Store extends EventEmitter {
   // JSON dump of the data structure
   get state() { // No setter intentional
     return this[$$store].toJS();
-  }
-  
-  // Get state at a specific cursor path
-  stateAt(path = []) {
-    const val = this.structure.getIn(path);
-    return typeof val !== 'object' ? val : val.toJS();
   }
 
 }

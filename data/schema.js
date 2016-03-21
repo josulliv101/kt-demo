@@ -30,7 +30,7 @@ var {nodeInterface, nodeField} = nodeDefinitions(
       return User.getUserByUserId(id);
     } else if (type === 'Viewer') {
       // node's will be passing real ids, so can't use friendlier ids like 'user_id'
-      return User.getUserById(id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
+      return {id}
     } else if (type === 'Profile') {
       return User.getProfileById(id);
     } else if (type === 'Campaign') {
@@ -147,18 +147,10 @@ var GraphQLCampaign = new GraphQLObjectType({
 var GraphQLViewer = new GraphQLObjectType({
   name: 'Viewer',
 
-  isTypeOf: function(obj) { return !!obj.user },
+  isTypeOf: function(obj) { return !obj.campaign_id && !obj.profile_id && !obj.user_id },
 
   fields: {
     id: globalIdField('Viewer'),
-    user: {
-      type: GraphQLUser,
-      resolve: ({user}) => user,
-    },
-    authenticated: {
-      type: GraphQLBoolean,
-      resolve: ({authenticated}) => authenticated,
-    },
     campaigns: {
       type: new GraphQLList(GraphQLCampaign),
       resolve: User.getCampaigns
@@ -172,11 +164,6 @@ var RootQuery = new GraphQLObjectType({
   fields: {
     viewer: {
       type: GraphQLViewer,
-      args: {
-        user_id: {
-          type: GraphQLString
-        }
-      },
       resolve: (root, {user_id}) => User.getUserByUserId(user_id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
     },
     profile: {
@@ -187,6 +174,15 @@ var RootQuery = new GraphQLObjectType({
         }
       },
       resolve: (root, {profile_id}) => User.getProfileByProfileId(profile_id),
+    },
+    user: {
+      type: GraphQLUser,
+      args: {
+        user_id: {
+          type: GraphQLString
+        }
+      },
+      resolve: (root, {user_id}) => User.getUserByUserId(user_id),
     },
     campaign: {
       type: GraphQLCampaign,

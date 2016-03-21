@@ -14,7 +14,7 @@ export default class App {
 
   constructor(defaultState = {}, dispatcher = new Dispatcher()) { 
 
-    // Initialize a store for client-side state. Relay store handles all state that persists to db.
+    // Store primarily for client-side state. Relay store handles all state that persists to db.
     reg.set(REG.STORE, new Store(dispatcher, defaultState));
     reg.set(REG.DISPATCHER, dispatcher);
 

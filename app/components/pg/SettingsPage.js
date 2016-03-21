@@ -44,7 +44,7 @@ class SettingsPage extends React.Component {
 
     console.log('save', this.props);
 
-    Relay.Store.commitUpdate(new UpdateProfileMutation({
+/*    Relay.Store.commitUpdate(new UpdateProfileMutation({
       user_id: this.refs.owner_id.value,
       fname: this.refs.fname.value,
       lname: this.refs.lname.value,
@@ -57,13 +57,13 @@ class SettingsPage extends React.Component {
         //history.pushState(null, `/campaigns`)
       },
       onFailure: (res) => console.log('fail', res)
-    });
+    });*/
 
   }
 
   render() {
 
-    const {profile_id, fname, lname, owner_id} = this.props.viewer.user.profile;
+    const {profile_id, fname, lname, owner_id} = this.props;
     //const [fname, lname] = name.split(' ');
     let errors = this.state && this.state.errors || {};
 
@@ -84,6 +84,7 @@ class SettingsPage extends React.Component {
               <li><a href="#contents" id="markdown-toc-contents">Contents</a></li>
               <li><Link to="/settings" activeStyle={activeStyle} onlyActiveOnIndex={true}>My Info</Link></li>
               <li><Link to="/settings/subscription" activeStyle={activeStyle}>Subscription</Link></li>
+              <li><Link to="/settings/faq" activeStyle={activeStyle}>Faq</Link></li>
             </ul>
           </BasicCard>
         </div>
@@ -115,21 +116,12 @@ function getFormControl({id, label, placeholder, value, disabled}, index, errors
 }
 
 
-export default Relay.createContainer(SettingsPage, {
+export default SettingsPage /*Relay.createContainer(SettingsPage, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        user {
-          profile {
-            id
-            profile_id
-            fname
-            lname
-            owner_id
-          }
-        }
         ${UpdateProfileMutation.getFragment('viewer')}
       }
     `
   }
-});
+});*/

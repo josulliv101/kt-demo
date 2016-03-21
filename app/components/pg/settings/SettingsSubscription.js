@@ -102,15 +102,6 @@ export default Relay.createContainer(SettingsSubscription, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        user {
-          profile {
-            id
-            profile_id
-            fname
-            lname
-            owner_id
-          }
-        }
         ${UpdateProfileMutation.getFragment('viewer')}
       }
     `

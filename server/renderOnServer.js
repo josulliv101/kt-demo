@@ -12,11 +12,13 @@ RelayStoreData.getDefaultInstance().getChangeEmitter().injectBatchingStrategy(()
 
 export default (req, res, next) => {
     
-    match({ routes, location: req.originalUrl }, (error, redirectLocation, renderProps) => {
+    var auth = req.user || {};
 
-        var authData = { auth: req.user || null }, // Set to null to preserve in json.stringify.
-              app = new App({authData});
-        console.log('authData', authData);
+    match({ routes: routes(auth), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
+
+        var app = new App({auth});
+        console.log('authData', auth);
+
         if (error) {
           next(error);
         } else if (redirectLocation) { 
@@ -34,7 +36,7 @@ export default (req, res, next) => {
               app.renderToString(renderProps);
               
               res.render(path.resolve(__dirname, '..', 'views', 'index.ejs'), {
-                  preloadedData: JSON.stringify({ relayData: data, authData }),
+                  preloadedData: JSON.stringify({ relayData: data, auth }),
                   assets_url: STATIC_ASSETS_URL,
                   reactOutput: app.renderToString(renderProps)
               });

@@ -5,14 +5,7 @@ export default class UpdateProfileMutation extends Relay.Mutation {
   static fragments = {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        user {
-          profile {
-            id
-            profile_id
-            fname
-            lname
-          }
-        }
+        __typename
       }
     `
   };

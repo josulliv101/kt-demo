@@ -5,7 +5,7 @@ export default class CreateNewCampaignMutation extends Relay.Mutation {
   static fragments = {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        id
+        __typename
       }
     `
   };

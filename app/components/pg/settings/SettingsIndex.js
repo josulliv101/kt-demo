@@ -3,8 +3,11 @@ import Relay from 'react-relay';
 import {Link} from 'react-router';
 import classNames from 'classnames';
 import Validate from 'validate.js';
-import UpdateProfileMutation from '../../../mutations/UpdateProfileMutation';
+//import UpdateProfileMutation from '../../../mutations/UpdateProfileMutation';
+import storeListener from '../../../decorators/components/storeListener';
+import {Store} from '../../../utils/registry';
 
+@storeListener(Store, 'auth') 
 class SettingsIndex extends React.Component {
 
   getConstraints() {
@@ -43,7 +46,7 @@ class SettingsIndex extends React.Component {
 
     console.log('save', this.props);
 
-    Relay.Store.commitUpdate(new UpdateProfileMutation({
+/*    Relay.Store.commitUpdate(new UpdateProfileMutation({
       user_id: this.refs.owner_id.value,
       fname: this.refs.fname.value,
       lname: this.refs.lname.value,
@@ -56,28 +59,28 @@ class SettingsIndex extends React.Component {
         //history.pushState(null, `/campaigns`)
       },
       onFailure: (res) => console.log('fail', res)
-    });
+    });*/
 
   }
 
   render() {
 
-    const {profile_id, fname, lname, owner_id} = this.props.viewer.user.profile;
+    const {profile_id, given_name, family_name, sub} = this.props.auth;
     //const [fname, lname] = name.split(' ');
     let errors = this.state && this.state.errors || {};
 
     var fields = [
-      {id: 'owner_id', value: owner_id, label: 'Owner', placeholder: 'Enter owner', disabled: false},
+      {id: 'owner_id', value: sub, label: 'Owner Id', placeholder: 'Enter owner', disabled: false},
       {id: 'profile_id', label: 'Username', value: profile_id},
-      {id: 'fname', label: 'First Name', value: fname, disabled: false},
-      {id: 'lname', label: 'Last Name', value: lname, disabled: false}
+      {id: 'given_name', label: 'First Name', value: given_name, disabled: false},
+      {id: 'family_name', label: 'Last Name', value: family_name, disabled: false}
     ];
     
     var activeStyle = {borderLeft: '2px solid #3097d1' };
 
     return (
       <div className="docs-content">
-        <h1 className="m-t-0">Settings</h1>
+        <h1 className="m-t-0">Settings ({this.props.user.name})</h1>
         <form ref="formUpdateProfile"className="form" noValidate>
           { fields.map((field, index) => getFormControl(field, index, errors)) }
           <button type="submit" className="btn btn-default" onClick={this.handleSubmit.bind(this)}>Submit</button>
@@ -97,21 +100,13 @@ function getFormControl({id, label, placeholder, value, disabled}, index, errors
   )
 }
 
+//${UpdateProfileMutation.getFragment('viewer')}
 
 export default Relay.createContainer(SettingsIndex, {
   fragments: {
-    viewer: () => Relay.QL`
-      fragment on Viewer {
-        user {
-          profile {
-            id
-            profile_id
-            fname
-            lname
-            owner_id
-          }
-        }
-        ${UpdateProfileMutation.getFragment('viewer')}
+    user: () => Relay.QL`
+      fragment on User {
+        name
       }
     `
   }

@@ -67,8 +67,9 @@ type Profile implements Node {
 }
 
 type Root {
-  viewer(user_id: String): Viewer
+  viewer: Viewer
   profile(profile_id: String): Profile
+  user(user_id: String): User
   campaign(campaign_id: String): Campaign
   node(id: ID!): Node
 }
@@ -104,7 +105,5 @@ type User implements Node {
 
 type Viewer implements Node {
   id: ID!
-  user: User
-  authenticated: Boolean
   campaigns: [Campaign]
 }

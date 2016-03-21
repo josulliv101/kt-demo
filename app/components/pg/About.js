@@ -23,11 +23,7 @@ export default Relay.createContainer(About, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        user {
-          profile {
-            profile_id
-          }
-        }
+        __typename
       }
     `
   }

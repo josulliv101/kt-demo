@@ -11,9 +11,9 @@ export default (targetClass) => {
 
   return class extends targetClass {
 
-	  constructor({relayData = [], authData = {}} = {}) {
+	  constructor({relayData = [], auth = null} = {}) {
 
-	    super(authData);
+	    super({auth});
 		
 	    Object.assign(this, { prepareData, relayData });
 	  }
