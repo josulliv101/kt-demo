@@ -30,7 +30,7 @@ var {nodeInterface, nodeField} = nodeDefinitions(
       return User.getUserByUserId(id);
     } else if (type === 'Viewer') {
       // node's will be passing real ids, so can't use friendlier ids like 'user_id'
-      return {id}
+      return {}
     } else if (type === 'Profile') {
       return User.getProfileById(id);
     } else if (type === 'Campaign') {
