@@ -3,7 +3,7 @@ import {CHANGE, SYMBOL} from '../actions/const';
 import Immutable from 'immutable'; //import Cursor from 'immutable/contrib/cursor';
 import actionHandler from '../decorators/actionHandler';
 
-// Only Symbol variables will have '$$'' prefix
+// Symbol variables will have '$$'' prefix
 const $$store = Symbol(SYMBOL.STORE);
 
 @actionHandler($$store)

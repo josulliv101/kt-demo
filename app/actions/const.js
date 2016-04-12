@@ -1,6 +1,5 @@
 const SYMBOL_PREFIX = '@@com.kindturtle';
 
-
 //// Utils ////
 
 export const REGISTRY = {

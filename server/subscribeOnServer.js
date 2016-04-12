@@ -1,6 +1,6 @@
 import path from 'path';
 import auth from '../server/authentication';
-import User from '../data/models/User';
+import Models from '../data/models/Models';
 
 const {STRIPE_SECRET_KEY} = process.env;
 
@@ -20,7 +20,7 @@ export default (req, res, next) => {
       source: req.body.id // obtained with Stripe.js
     }, function(err, customer) {
       console.log('customer', JSON.stringify(customer));
-      User.addCustomer({ 
+      Models.addCustomer({ 
       	user_id: req.body.kt_user_id, 
       	customer_id: customer.id,
       	email: customer.email,

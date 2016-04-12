@@ -4,9 +4,6 @@ import {REGISTRY as REG} from './actions/const';
 import renderer from './decorators/renderer';
 import reg from './utils/registry';
 
-// Prominent instances go in registry. All actions are singletons (not in registry). 
-// Actions grab any needed instances (biggies include Store, Dispatcher) from registry.
-
 // The renderer decorator adds methods for rendering routes to both the DOM & to a <String>
 
 @renderer

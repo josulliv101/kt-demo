@@ -1,10 +1,9 @@
 import path from 'path';
 import webpack from 'webpack';
-//import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 const env = process.env;
 
-let configBrowser = {
+export default {
   entry: {
     app: path.resolve('app/client.js')
   },
@@ -14,15 +13,6 @@ let configBrowser = {
     publicPath: '/js'
   },
   module: {
-
-/*    preLoaders: [
-      {
-        test: /\.jsx$|\.js$/,
-        loader: 'eslint-loader',
-        include: __dirname + '/app',
-        exclude: /bundle\.js$/
-      }
-    ],*/
 
     loaders: [
       {test: /\.js(x)?$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/},
@@ -46,9 +36,6 @@ let configBrowser = {
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
-    new webpack.EnvironmentPlugin(Object.keys(env)),
-    //new ExtractTextPlugin('[name].css')
+    new webpack.EnvironmentPlugin(Object.keys(env))
   ]
 };
-
-export default [configBrowser];

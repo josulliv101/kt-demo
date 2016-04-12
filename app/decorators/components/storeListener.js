@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Create a React higher order component
-export default (Store, ...ids) => { // id1, id2, id3
+export default (Store, ...ids) => {
 
 	const getStoreState = (stateIds) => {
 

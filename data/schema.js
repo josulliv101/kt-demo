@@ -21,20 +21,20 @@ import {
   toGlobalId,
 } from 'graphql-relay';
 
-import User from './models/User';
+import Models from './models/Models';
 
 var {nodeInterface, nodeField} = nodeDefinitions(
   (globalId) => {
     var {type, id} = fromGlobalId(globalId);
     if (type === 'User') {
-      return User.getUserByUserId(id);
+      return Models.getUserByUserId(id);
     } else if (type === 'Viewer') {
       // node's will be passing real ids, so can't use friendlier ids like 'user_id'
       return {}
     } else if (type === 'Profile') {
-      return User.getProfileById(id);
+      return Models.getProfileById(id);
     } else if (type === 'Campaign') {
-      return User.getCampaignById(id);
+      return Models.getCampaignById(id);
     }
     return null;
   }
@@ -98,7 +98,7 @@ var GraphQLUser = new GraphQLObjectType({
     profile: {
       type: GraphQLProfile,
       resolve: user => {
-       return User.getUserProfile(user.user_id)
+       return Models.getUserProfile(user.user_id)
       }
     },
   },
@@ -124,7 +124,7 @@ var GraphQLCampaign = new GraphQLObjectType({
       type: GraphQLUser,
       resolve: campaign => {
         //console.log('owner!', campaign.owner_id);
-        return User.getUserByUserId(campaign.owner_id)
+        return Models.getUserByUserId(campaign.owner_id)
       }
     },
     location: {
@@ -153,7 +153,7 @@ var GraphQLViewer = new GraphQLObjectType({
     id: globalIdField('Viewer'),
     campaigns: {
       type: new GraphQLList(GraphQLCampaign),
-      resolve: User.getCampaigns
+      resolve: Models.getCampaigns
     },
   },
   interfaces: [nodeInterface],
@@ -164,7 +164,7 @@ var RootQuery = new GraphQLObjectType({
   fields: {
     viewer: {
       type: GraphQLViewer,
-      resolve: (root, {}) => User.getUserByUserId('-1').then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
+      resolve: (root, {}) => Models.getUserByUserId('-1').then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
     },
     profile: {
       type: GraphQLProfile,
@@ -173,7 +173,7 @@ var RootQuery = new GraphQLObjectType({
           type: GraphQLString
         }
       },
-      resolve: (root, {profile_id}) => User.getProfileByProfileId(profile_id),
+      resolve: (root, {profile_id}) => Models.getProfileByProfileId(profile_id),
     },
     user: {
       type: GraphQLUser,
@@ -182,7 +182,7 @@ var RootQuery = new GraphQLObjectType({
           type: GraphQLString
         }
       },
-      resolve: (root, {user_id}) => User.getUserByUserId(user_id),
+      resolve: (root, {user_id}) => Models.getUserByUserId(user_id),
     },
     campaign: {
       type: GraphQLCampaign,
@@ -191,7 +191,7 @@ var RootQuery = new GraphQLObjectType({
           type: GraphQLString
         }
       },
-      resolve: (root, {campaign_id}) => User.getCampaignById(campaign_id),
+      resolve: (root, {campaign_id}) => Models.getCampaignById(campaign_id),
     },
     node: nodeField,
   },
@@ -215,7 +215,7 @@ var CreateNewUserMutation = mutationWithClientMutationId({
     },
   },
    
-  mutateAndGetPayload: User.addUser
+  mutateAndGetPayload: Models.addUser
  
 });
 
@@ -238,7 +238,7 @@ var CreateNewProfileMutation = mutationWithClientMutationId({
     },
   },
    
-  mutateAndGetPayload: User.addProfile
+  mutateAndGetPayload: Models.addProfile
  
 });
 
@@ -262,11 +262,11 @@ var CreateNewCampaignMutation = mutationWithClientMutationId({
     },
     viewer: {
       type: GraphQLViewer,
-      resolve: ({campaign}) => User.getUserByUserId(campaign.owner_id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
+      resolve: ({campaign}) => Models.getUserByUserId(campaign.owner_id).then(user => ({ id: user.id, user, authenticated: !user.anonymous }))
     }
   },
    
-  mutateAndGetPayload: User.addCampaign
+  mutateAndGetPayload: Models.addCampaign
  
 });
 
@@ -288,7 +288,7 @@ var UpdateProfileMutation = mutationWithClientMutationId({
     }
   },
    
-  mutateAndGetPayload: User.updateProfile
+  mutateAndGetPayload: Models.updateProfile
  
 });
 
