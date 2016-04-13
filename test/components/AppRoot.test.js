@@ -14,7 +14,7 @@ describe("AppRoot Component", function() {
     expect(wrapper).to.not.have.className('fetching');
   });
 
-  it('should render as `.fetching` when needed', () => {
+  it('should render as `.fetching` when fetching prop is true', () => {
     const wrapper = shallow(<AppRoot fetching={true} />);
     expect(wrapper).to.have.className('fetching');
   });
