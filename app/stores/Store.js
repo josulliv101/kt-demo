@@ -6,6 +6,9 @@ import actionHandler from '../decorators/actionHandler';
 // Symbol variables will have '$$'' prefix
 const $$store = Symbol(SYMBOL.STORE);
 
+// The actionHandler decorater adds a <Function>handleAction. It defines how to
+// mutate the store based on incoming actions. Then, emits a CHANGE event.
+
 @actionHandler($$store)
 class Store extends EventEmitter {
   
