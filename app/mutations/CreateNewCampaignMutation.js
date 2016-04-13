@@ -1,5 +1,7 @@
 import Relay from 'react-relay';
 
+/* TODO: Needs refactor */
+
 export default class CreateNewCampaignMutation extends Relay.Mutation {
 
   static fragments = {
