@@ -61,10 +61,4 @@ class Store extends EventEmitter {
 
 }
 
-Store.defaultState = { 
-    auth: null, 
-    fetching: false, 
-    notifications: [] 
-  };
-
 export default Store
