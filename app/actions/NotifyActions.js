@@ -1,4 +1,4 @@
-import {NOTIFY2} from './const';
+import {NOTIFY} from './const';
 import {Store, Dispatcher} from '../utils/registry';
 import singleton from '../decorators/singleton';
 
@@ -15,13 +15,13 @@ class NotifyActions {
   	if (notifications.length > 0) return;
 
 	Dispatcher().dispatch({ 
-		actionType: NOTIFY2.SHOW, 
+		actionType: NOTIFY.SHOW, 
 		update: {message, key, dismissAfter, style} 
 	});
   }
 
   clear() { 
-	Dispatcher().dispatch({ actionType: NOTIFY2.CLEAR });
+	Dispatcher().dispatch({ actionType: NOTIFY.CLEAR });
   }
 }
 

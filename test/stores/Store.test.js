@@ -1,5 +1,5 @@
 import Store from '../../app/stores/Store';
-import {CHANGE, FETCH2, NOTIFY2} from '../../app/actions/const';
+import {CHANGE, FETCH, NOTIFY} from '../../app/actions/const';
 
 const expect = require("chai").expect;
 const sinon = require("sinon");
@@ -70,7 +70,7 @@ describe("StateStore", function() {
         
         expect(store.state.fetching).to.be.false;
 
-        dispatcher.dispatch({actionType: FETCH2.STATUS, update: true });
+        dispatcher.dispatch({actionType: FETCH.STATUS, update: true });
         
         expect(store.state.fetching).to.be.true;
         expect(orig).to.not.equal(store.structure);
@@ -83,7 +83,7 @@ describe("StateStore", function() {
         
         expect(store.state.notifications).to.be.empty;
 
-        dispatcher.dispatch({actionType: NOTIFY2.SHOW, update: {txt: 'helloworld'}});
+        dispatcher.dispatch({actionType: NOTIFY.SHOW, update: {txt: 'helloworld'}});
         
         expect(store.state.notifications.length).to.equal(1);
         expect(orig).to.not.equal(store.structure);
@@ -96,7 +96,7 @@ describe("StateStore", function() {
         
         expect(store.state.fetching).to.be.false;
 
-        dispatcher.dispatch({actionType: FETCH2.STATUS, update: false });
+        dispatcher.dispatch({actionType: FETCH.STATUS, update: false });
         
         expect(store.state.fetching).to.be.false;
         expect(orig).to.equal(store.structure);

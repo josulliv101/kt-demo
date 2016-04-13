@@ -40,7 +40,7 @@ export const ACTION = {
 
 //// Actions ////
 
-export const FETCH2 = {
+export const FETCH = {
   STATUS: {
     id: 'fetch_status',
     type: ACTION.TYPE.SET,
@@ -48,11 +48,7 @@ export const FETCH2 = {
   }
 };
 
-export const FETCH = {
-  STATUS: `${ACTION.TYPE.MERGE}:fetch_status`
-};
-
-export const NOTIFY2 = {
+export const NOTIFY = {
   SHOW: {
     id: 'notify_show',
     type: `${ACTION.TYPE.ADD}`,
@@ -63,9 +59,4 @@ export const NOTIFY2 = {
     type: `${ACTION.TYPE.CLEAR}`,
     cursor: CURSOR.NOTIFICATIONS
   }
-};
-
-export const NOTIFY = {
-  SHOW: `${ACTION.TYPE.ADD}:notify_show`,
-  CLEAR: `${ACTION.TYPE.CLEAR}:notify_clear`
 };
