@@ -28,6 +28,9 @@ export const CURSOR = {
 
 
 //// Actions Types ////
+
+// Each type maps to how the store state gets mutated
+
 export const ACTION = {
   TYPE: {
     ADD: 'add',
