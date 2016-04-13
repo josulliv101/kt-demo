@@ -6,7 +6,6 @@ import singleton from '../decorators/singleton';
 class FetchActions {
 
   status(fetching = false) {
-  	const update = { fetching };
 	Dispatcher().dispatch({ actionType: FETCH.STATUS, update: fetching });
   }
 }
