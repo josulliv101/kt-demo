@@ -1,3 +1,5 @@
+// Needed to tweak react-notification plugin
+
 const bar = {
   position: 'fixed',
   top: '1rem',
