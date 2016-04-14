@@ -38,7 +38,6 @@ class Home extends React.Component {
         </div>
         <div className="col-md-3">
           {
-            //true || authenticated && user && !user.isCustomer &&
             <BasicCard>
               <BecomeMemberCard {...this.props} forceFetch={this.props.relay.forceFetch} />
             </BasicCard>

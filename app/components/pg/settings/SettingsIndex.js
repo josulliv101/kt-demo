@@ -46,7 +46,7 @@ class SettingsIndex extends React.Component {
 
     console.log('save', this.props);
 
-/*    Relay.Store.commitUpdate(new UpdateProfileMutation({
+    Relay.Store.commitUpdate(new UpdateProfileMutation({
       user_id: this.refs.owner_id.value,
       fname: this.refs.fname.value,
       lname: this.refs.lname.value,
@@ -59,19 +59,19 @@ class SettingsIndex extends React.Component {
         //history.pushState(null, `/campaigns`)
       },
       onFailure: (res) => console.log('fail', res)
-    });*/
+    });
 
   }
 
   render() {
 
-    const {profile_id, given_name, family_name, sub} = this.props.auth;
+    const {user_id, given_name, family_name, sub} = this.props.auth;
     //const [fname, lname] = name.split(' ');
     let errors = this.state && this.state.errors || {};
 
     var fields = [
       {id: 'owner_id', value: sub, label: 'Owner Id', placeholder: 'Enter owner', disabled: false},
-      {id: 'profile_id', label: 'Username', value: profile_id},
+      {id: 'profile_id', label: 'Username', value: user_id},
       {id: 'given_name', label: 'First Name', value: given_name, disabled: false},
       {id: 'family_name', label: 'Last Name', value: family_name, disabled: false}
     ];
