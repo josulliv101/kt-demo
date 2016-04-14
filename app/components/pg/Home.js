@@ -2,7 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import {Link} from 'react-router';
 import {BasicCard, AlertCard} from '../cards/CardTypes';
-import Campaigns from '../Campaigns';
+import Campaigns from '../cards/Campaigns';
 import BecomeMemberCard from '../cards/BecomeMemberCard';
 
 class Home extends React.Component {
@@ -10,7 +10,7 @@ class Home extends React.Component {
   render() {
 
     var {user, authenticated, auth} = this.props;
-    //console.log('user', user);
+
     return (
       <div className="row">
         <div className="col-md-9">
@@ -50,6 +50,7 @@ class Home extends React.Component {
   }
 }
 
+export { Home as PureHome}; // Pure for test 
 export default Relay.createContainer(Home, {
   fragments: {
     viewer: () => Relay.QL`
