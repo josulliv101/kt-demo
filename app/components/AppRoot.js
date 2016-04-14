@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import TopNav from './layout/TopNav';
+import TopNav from './layout/topnav/TopNav';
 import { NotificationStack as Growl } from 'react-notification';
 import {NotifyActions} from '../actions/';
 import classnames from 'classnames';

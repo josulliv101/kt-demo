@@ -1,20 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router';
-import ProfileDropdown from '../ProfileDropdown';
+import classnames from 'classnames';
+import ProfileDropdown from './ProfileDropdown';
 
 class TopNav extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     
-    const {user} = this.props;
+    const {user} = this.props,
+          classes = classnames('navbar', 'navbar-inverse', 'navbar-fixed-top', 'app-navbar', { authenticated: user &&  user.picture }); // TODO: switch to real flag
 
     return (
-      <nav className="navbar navbar-inverse navbar-fixed-top app-navbar">
+      <nav className={classes}>
         <div className="container">
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-main">
