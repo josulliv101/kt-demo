@@ -1,7 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
-//import {Link} from 'react-router';
-import {BasicCard, AlertCard} from '../cards/CardTypes';
+import {BasicCard} from '../cards/CardTypes';
 
 class Faq extends React.Component {
 
@@ -17,12 +16,4 @@ class Faq extends React.Component {
   }
 }
 
-export default Faq /*Relay.createContainer(Faq, {
-  fragments: {
-    viewer: () => Relay.QL`
-      fragment on Viewer {
-        __typename
-      }
-    `
-  }
-});*/
+export default Faq
